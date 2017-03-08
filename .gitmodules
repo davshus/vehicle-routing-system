@@ -1,0 +1,3 @@
+[submodule "tinshoes"]
+	path = tinshoes
+	url = http://bitbucket.com/dshus/tinshoes
