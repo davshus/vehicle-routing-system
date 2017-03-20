@@ -1,9 +1,9 @@
 package vrp;
 public class Pair {
-	char name;
-	int street;
-	int avenue;
-	boolean deliver;
+	private char name;
+	private int street;
+	private int avenue;
+	private boolean deliver;
 	public Pair(char name, int street, int avenue, boolean deliver) {
 		this.name = name;
 		this.street = street;
