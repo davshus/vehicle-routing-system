@@ -21,15 +21,13 @@ public class City {
 	}
 
 
-	public getNextTo(int x, int y){
-
+	public getNextTo(Point startPoint){
+		
 	}
 
-	public Pair floodFill(int x, int y){
-		Pair startPoint = map[x][y];
-
-
-			
+	public Pair floodFill(Point startPoint){
+		// Pair startPoint = map[x][y];
+		
 	}
 
 }
