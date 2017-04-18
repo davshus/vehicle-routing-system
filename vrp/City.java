@@ -1,6 +1,6 @@
 package vrp;
 import java.io.File;
-import java.util.Scanner;
+import java.util.*;
 import vrp.Pair;
 import vrp.Avenue;
 import tinshoes.geom.Point;
@@ -20,14 +20,13 @@ public class City {
 		return this.map;
 	}
 
+	
 
-	public getNextTo(Point startPoint){
+	public Pair floodFill(Pair startPoint){
+		ArrayList<Point> searchedPoint = new ArrayList<Point>();
 		
 	}
 
-	public Pair floodFill(Point startPoint){
-		// Pair startPoint = map[x][y];
-		
-	}
+
 
 }
