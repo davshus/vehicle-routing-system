@@ -20,13 +20,50 @@ public class City {
 		return this.map;
 	}
 
-	
+	Queue searchQueue = new LinkedList();
+	HashMap<Pair, Pair> valueToParent = new HashMap<Pair, Pair>();
 
 	public Pair floodFill(Pair startPoint){
-		ArrayList<Point> searchedPoint = new ArrayList<Point>();
-		
+		int street = startPoint.getStreet();
+		int avenue = startPoint.getAvenue();
+		if (street % 2 == 0){
+			Pair down = map[street][avenue - 1];
+				down.setUp(false);
+				down.setDistance(100);
+				searchQueue.add(down);
+
+			if (street != 49){
+				Pair up = map[street][avenue + 1];
+				up.setUp(true);
+				up.setDistance(100);
+				searchQueue.add(up);
+			}
+		}else{
+			
+		}
+
+
+
+	}
+
+	public void addNextTo(Pait point){
+		if (point.getUp() && point.getAvenue() != ){
+
+		}else if (point.getDown())
 	}
 
 
+	public void nextFoundPoint(Pair nextPair){
+		if(nextPair.getDeliver()){
+			System.out.println(nexPair.getStreet() + "\t" + nextPair.getAvenue());
+			while(searchQueue.peek() != null){
+				try{
+					searchQueue.remove();	
+				}catch(Exception e){
+				}
+			}
+			
+		}
+	}	
 
 }
