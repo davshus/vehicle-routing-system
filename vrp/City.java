@@ -5,13 +5,19 @@ import vrp.Pair;
 import vrp.Avenue;
 import tinshoes.geom.Point;
 public class City {
-	Pair[][] map;
+	private Pair[][] map;
+	private int bart, lisa;
 	public City() {
 	}
 	public void setupMap(File inputFile) throws Exception {
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
 		while (sc.hasNext()) {
-			System.out.println(sc.next());
+			String curr = sc.next();
+			if (curr.equals("Bart Complex")) {
+				bart = curr.nextInt();
+				curr.next(); //Lisa
+				lisa = curr.nextInt();
+			}
 		}
 
 
@@ -19,7 +25,12 @@ public class City {
 	public Pair[][] getMap() {
 		return this.map;
 	}
-
+	public int getBart() {
+		return this.bart;
+	}
+	public int getLisa() {
+		return this.lisa;
+	}
 	Queue searchQueue = new LinkedList();
 	HashMap<Pair, Pair> valueToParent = new HashMap<Pair, Pair>();
 
