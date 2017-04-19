@@ -5,7 +5,7 @@ import vrp.Pair;
 import vrp.Avenue;
 import tinshoes.geom.Point;
 public class City {
-	Avenue[][] map;
+	Pair[][] map;
 	public City() {
 	}
 	public void setupMap(File inputFile) throws Exception {
@@ -16,7 +16,7 @@ public class City {
 
 
 	}
-	public Avenue[][] getMap() {
+	public Pair[][] getMap() {
 		return this.map;
 	}
 
