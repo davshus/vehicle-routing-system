@@ -3,26 +3,15 @@ public class Pair {
 	private char name;
 	private int street;
 	private int avenue;
-	private boolean deliver, goingUp;
-	private int distance;
+	private boolean deliver;
 
 	public Pair(char name, int street, int avenue, boolean deliver) {
 		this.name = name;
 		this.street = street;
 		this.avenue = avenue;
 		this.deliver = deliver;
-		this.distance = 0;
-		this.goingUp = false;
 	}
-
-	public void setUp(boolean up){ this.goingUp = up; }
-
-	public boolean getUp(){ return this.goingUp; }
-
-	public void setDistance(int distance){ this.distance = distance; }
-
-	public int getDistance(){ return distance; }
-
+	
 	public void setName(char name) { this.name = name; }
 
 	public char getName() {	return this.name; }

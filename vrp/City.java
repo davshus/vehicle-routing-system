@@ -21,26 +21,31 @@ public class City {
 	}
 
 	Queue searchQueue = new LinkedList();
-	HashMap<Pair, Pair> valueToParent = new HashMap<Pair, Pair>();
 
 	public Pair floodFill(Pair startPoint){
-		int street = startPoint.getStreet();
-		int avenue = startPoint.getAvenue();
-		if (street % 2 == 0){
-			Pair down = map[street][avenue - 1];
-				down.setUp(false);
-				down.setDistance(100);
-				searchQueue.add(down);
+	// 	int street = startPoint.getStreet();
+	// 	int avenue = startPoint.getAvenue();
+	// 	if (street % 2 == 0){
+	// 		Pair down = map[street][avenue - 1];
+	// 			down.setUp(false);
+	// 			down.setDistance(100);
+	// 			searchQueue.add(down);
 
-			if (street != 49){
-				Pair up = map[street][avenue + 1];
-				up.setUp(true);
-				up.setDistance(100);
-				searchQueue.add(up);
-			}
-		}else{
-			if (avenue )
-		}
+	// 		if (street != 49){
+	// 			Pair up = map[street][avenue + 1];
+	// 			up.setUp(true);
+	// 			up.setDistance(100);
+	// 			searchQueue.add(up);
+	// 		}
+	// 	}else{
+	// 		if (avenue == 0){
+
+	// 		}else if (avenue == 50){
+
+	// 		}else{
+	// 			addNextTo(startPoint);
+	// 		}
+	// 	}
 
 
 
