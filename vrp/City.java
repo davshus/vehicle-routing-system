@@ -14,9 +14,9 @@ public class City {
 		while (sc.hasNext()) {
 			String curr = sc.next();
 			if (curr.equals("Bart Complex")) {
-				bart = curr.nextInt();
-				curr.next(); //Lisa
-				lisa = curr.nextInt();
+				bart = sc.nextInt();
+				sc.next(); //Lisa
+				lisa = sc.nextInt();
 			}
 		}
 
@@ -32,7 +32,7 @@ public class City {
 		return this.lisa;
 	}
 	Queue searchQueue = new LinkedList();
-	boolean[][] searched = boolean[map.count][map[0].count];
+	boolean[][] searched = new boolean[250][500];
 
 	public Pair floodFill(Pair startPoint){
 		int street = startPoint.getStreet();
@@ -41,30 +41,75 @@ public class City {
 
 		searched[street][avenue] = true;
 
+
+		while(searchQueue.peek() != null){
+
+		}
+
+		//just for error stuf
+		return startPoint;
 	}
 
-	public void addNextTo(Pait point){
+	public void addNextTo(Pair point){
 		nextFoundPoint(point);
 		int street = point.getStreet();
 		int avenue = point.getAvenue();
-		if(avenue % 2 == 0){
-			
+
+
+
+		if (avenue % 10 == 0){
+
 		}
 
+	}
+
+	public int[][] findAllNextTo(int x, int y){
+		ArrayList<int[]> points = new ArrayList<int[]>();
+		int[] ex = new int[2];
+		ex[0] = x;
+		ex[1] = y + 1;
+		points.add(ex);
+		if (y != 498){ 
+			points.add(ex); 
+			ex[1] ++;
+		}
+		if (y != 0){
+			ex[1] = y - 1;
+			points.add(ex);
+			ex[1]--;
+			points.add(ex);
+		}
+
+		if (y % 10 == 0){
+			if (x != 0){
+				ex[0] = x - 1;
+				ex[1] = y;
+				points.add(ex);
+			}
+			if (x != 250){
+				ex[0] = x + 1;
+				points.add(ex);
+			}
+		}
+		int[][] arr = new int[points.count()][2];
+		points.toArray(arr);
+		return arr;
 	}
 
 
 	public void nextFoundPoint(Pair nextPair){
-		if(nextPair.getDeliver()){
-			System.out.println(nexPair.getStreet() + "\t" + nextPair.getAvenue());
+		if(nextPair.getDeliver() > 0){
+			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
 			while(searchQueue.peek() != null){
 				try{
 					searchQueue.remove();	
 				}catch(Exception e){
+
 				}
 			}
-			
 		}
 	}	
+
+	// public boolean breaksB
 
 }

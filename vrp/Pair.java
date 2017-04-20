@@ -24,7 +24,7 @@ public class Pair {
 
 	public int getAvenue() { return this.avenue; }
 
-	public void setDeliver(boolean deliver) { this.deliver = deliver; }
+	public void setDeliver(int deliver) { this.deliver = deliver; }
 
-	public boolean getDeliver() { return this.deliver; }
+	public int getDeliver() { return this.deliver; }
 }
