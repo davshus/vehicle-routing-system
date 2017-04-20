@@ -3,9 +3,9 @@ public class Pair {
 	private char name;
 	private int street;
 	private int avenue;
-	private boolean deliver;
+	private int deliver;
 
-	public Pair(char name, int street, int avenue, boolean deliver) {
+	public Pair(char name, int street, int avenue, int deliver) {
 		this.name = name;
 		this.street = street;
 		this.avenue = avenue;
