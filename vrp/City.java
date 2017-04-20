@@ -31,6 +31,9 @@ public class City {
 	public int getLisa() {
 		return this.lisa;
 	}
+
+
+
 	Queue searchQueue = new LinkedList();
 	boolean[][] searched = new boolean[250][500];
 
@@ -41,27 +44,85 @@ public class City {
 
 		searched[street][avenue] = true;
 
+		Pair fillerPair = new Pair();
 
 		while(searchQueue.peek() != null){
-
+			Pair currSearch = (Pair) searchQueue.poll();
+			Pair finalPair = addNextTo(currSearch);
+			if (finalPair != null){
+				System.out.println("A Pair was found");
+				return finalPair;
+			}
 		}
-
 		//just for error stuf
-		return startPoint;
+		return fillerPair;
 	}
 
-	public void addNextTo(Pair point){
+	public Pair addNextTo(Pair point){
 		nextFoundPoint(point);
-		int street = point.getStreet();
-		int avenue = point.getAvenue();
+		int x = point.getStreet();
+		int y = point.getAvenue();
 
 
-
-		if (avenue % 10 == 0){
-
+		ArrayList<int[]> points = new ArrayList<int[]>();
+		int[] ex = new int[2];
+		ex[0] = x;
+		ex[1] = y + 1;
+		points.add(ex);
+		if (y != 498){ 
+			points.add(ex); 
+			ex[1] ++;
+		}
+		if (y != 0){
+			ex[1] = y - 1;
+			points.add(ex);
+			ex[1]--;
+			points.add(ex);
 		}
 
+		if (y % 10 == 0){
+			if (x != 0){
+				ex[0] = x - 1;
+				ex[1] = y;
+				points.add(ex);
+			}
+			if (x != 250){
+				ex[0] = x + 1;
+				points.add(ex);
+			}
+		}
+		int[][] arr = new int[points.size()][2];
+		arr = points.toArray(arr);
+
+		for (int[] i : arr){
+			if (searched[i[0]][i[1]] == false){
+				map[i[0]][i[1]].setPair(point);
+				if(nextFoundPoint(map[i[0]][i[1]])){
+					return map[i[0]][i[1]];
+				}else{
+					searchQueue.add(map[i[0]][i[1]]);
+				}
+			}
+		}
+		return null;
+
 	}
+
+	public boolean nextFoundPoint(Pair nextPair){
+		if(nextPair.getDeliver() > 0){
+			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
+			while(searchQueue.peek() != null){
+				try{
+					searchQueue.remove();	
+				}catch(Exception e){
+					System.out.println("Removal failed");
+					return true;
+				}
+			}
+			return true;
+		}
+		return false;
+	}	
 
 	public int[][] findAllNextTo(int x, int y){
 		ArrayList<int[]> points = new ArrayList<int[]>();
@@ -91,25 +152,9 @@ public class City {
 				points.add(ex);
 			}
 		}
-		int[][] arr = new int[points.count()][2];
-		points.toArray(arr);
+		int[][] arr = new int[points.size()][2];
+		arr = points.toArray(arr);
 		return arr;
 	}
-
-
-	public void nextFoundPoint(Pair nextPair){
-		if(nextPair.getDeliver() > 0){
-			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
-			while(searchQueue.peek() != null){
-				try{
-					searchQueue.remove();	
-				}catch(Exception e){
-
-				}
-			}
-		}
-	}	
-
-	// public boolean breaksB
 
 }
