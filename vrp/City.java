@@ -5,9 +5,11 @@ import vrp.Pair;
 import vrp.Avenue;
 import tinshoes.geom.Point;
 public class City {
+	public static int nStreets = 250, nAvenues = 50;
 	private Pair[][] map;
-	private int bart, lisa;
+	private int lisa, bart;
 	public City() {
+		map = new Pair[nStreets][nAvenues * 10];
 	}
 	public void setupMap(File inputFile) throws Exception {
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
