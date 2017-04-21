@@ -4,14 +4,20 @@ public class Pair {
 	private int street;
 	private int avenue;
 	private int deliver;
+	private Pair pairFrom;
 
 	public Pair(int street, int avenue, char name) {
 		this.name = name;
 		this.street = street;
 		this.avenue = avenue;
 		this.deliver = 0;
+		this.pairFrom = null;
 	}
 	
+	public void setPair(Pair newPair){ this.pairFrom = newPair; }
+
+	public Pair getPair(){ return this.pairFrom; }
+
 	public void setName(char name) { this.name = name; }
 
 	public char getName() {	return this.name; }

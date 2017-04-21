@@ -21,9 +21,9 @@ public class City {
 		while (sc.hasNext()) {
 			String curr = sc.next();
 			if (curr.equals("Bart Complex")) {
-				bart = curr.nextInt();
-				curr.next(); //Lisa
-				lisa = curr.nextInt();
+				bart = sc.nextInt();
+				sc.next(); //Lisa
+				lisa = sc.nextInt();
 			}
 			int street = curr.substring(0, curr.length() - 1);
 			int avenue = sc.next().substring(0, curr.length() - 1);
@@ -40,55 +40,128 @@ public class City {
 	public int getLisa() {
 		return this.lisa;
 	}
+
+
+
+
+	public findDistance(Pair startPair){
+		int distance = 0;
+		Pair currentToCheck = startPair;
+		while(currentToCheck != null{
+			int distX = Math.abs(currentToCheck.getStreet() - currentToCheck.getPair().getStreet());
+			int distY = Math.abs(currentToCheck.getAvenue() - currentToCheck.getPair().getAvenue());
+			distance += distX * 200;
+			distance += distX * 100;
+			currentToCheck = currentToCheck.getPair();
+		}
+		return distance
+
+	}
+
 	Queue searchQueue = new LinkedList();
+	boolean[][] searched = new boolean[250][500];
 
-	public Pair floodFill(Pair startPoint){
-	// 	int street = startPoint.getStreet();
-	// 	int avenue = startPoint.getAvenue();
-	// 	if (street % 2 == 0){
-	// 		Pair down = map[street][avenue - 1];
-	// 			down.setUp(false);
-	// 			down.setDistance(100);
-	// 			searchQueue.add(down);
+	public returnStatements nearestTo(Pair startPoint){
+		int street = startPoint.getStreet();
+		int avenue = startPoint.getAvenue();
+		addNextTo(startPoint);
 
-	// 		if (street != 49){
-	// 			Pair up = map[street][avenue + 1];
-	// 			up.setUp(true);
-	// 			up.setDistance(100);
-	// 			searchQueue.add(up);
-	// 		}
-	// 	}else{
-	// 		if (avenue == 0){
+		searched[street][avenue] = true;
 
-	// 		}else if (avenue == 50){
+		Pair fillerPair = new Pair();
 
-	// 		}else{
-	// 			addNextTo(startPoint);
-	// 		}
-	// 	}
+		while(searchQueue.peek() != null){
+			Pair currSearch = (Pair) searchQueue.poll();
+			Pair finalPair = addNextTo(currSearch);
+			if (finalPair != null){
+				System.out.println("A Pair was found");
+				int dist = findDistance()
+				return new returnStatements(startPoint, finalPair, dist);
+			}
+		}
+		//just for error stuf
+		return null;
+	}
 
+	public Pair addNextTo(Pair point){
+		nextFoundPoint(point);
+		int x = point.getStreet();
+		int y = point.getAvenue();
 
+		ArrayList<int[]> points = new ArrayList<int[]>();
+		int[] ex = new int[2];
+		ex[0] = x;
+		ex[1] = y + 1;
+		points.add(ex);
+		if (y != 498){ 
+			points.add(ex); 
+			ex[1] ++;
+		}
+		if (y != 0){
+			ex[1] = y - 1;
+			points.add(ex);
+			ex[1]--;
+			points.add(ex);
+		}
+
+		if (y % 10 == 0){
+			if (x != 0){
+				ex[0] = x - 1;
+				ex[1] = y;
+				points.add(ex);
+			}
+			if (x != 250){
+				ex[0] = x + 1;
+				points.add(ex);
+			}
+		}
+
+		for (int[] i : points){
+			if (searched[i[0]][i[1]] == false){
+				map[i[0]][i[1]].setPair(point);
+				if(nextFoundPoint(map[i[0]][i[1]])){
+					return map[i[0]][i[1]];
+				}else{
+					searchQueue.add(map[i[0]][i[1]]);
+				}
+			}
+		}
+		return null;
 
 	}
 
-	public void addNextTo(Pait point){
-		if (point.getUp() && point.getAvenue() != ){
-
-		}else if (point.getDown())
-	}
-
-
-	public void nextFoundPoint(Pair nextPair){
-		if(nextPair.getDeliver()){
-			System.out.println(nexPair.getStreet() + "\t" + nextPair.getAvenue());
+	public boolean nextFoundPoint(Pair nextPair){
+		if(nextPair.getDeliver() > 0){
+			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
 			while(searchQueue.peek() != null){
 				try{
 					searchQueue.remove();	
 				}catch(Exception e){
+					System.out.println("Removal failed");
+					return true;
 				}
 			}
-			
+			return true;
 		}
-	}	
+		return false;
+	}
 
+}
+
+public class returnStatements{
+	Pair startPair;
+	Pair endPair;
+	int distance;
+
+	public returnStatements(Pair start, Pair end, int dist){
+		this.startPair = start;
+		this.endPair = end;
+		this.distance = dist;
+	}
+
+	public Pair getStart(){ return startPair; }
+
+	public Pair getEnd(){ return this.endPair; }
+
+	public int getDistance(){ return this.distance; }
 }
