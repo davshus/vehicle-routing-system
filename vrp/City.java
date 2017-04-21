@@ -33,7 +33,7 @@ public class City {
 			String aveStr = sc.next();
 			int avenue = Integer.parseInt(aveStr.substring(0, aveStr.length() - 1));
 			char letter = sc.next().charAt(0);
-			map[street - 1][(((avenue - 1) * 10) + (letter - 'A'))].addDeliver();
+			map[street - 1][calcY(avenue, letter)].addDeliver();
 		}
 		System.out.println(bart + " " + lisa);
 	}
@@ -153,4 +153,7 @@ public class City {
 		return false;
 	}
 
+	public int calcY(int ave, char name) {
+		return ((avenue - 1) * 10) + (letter - 'A');
+	}
 }
