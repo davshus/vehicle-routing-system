@@ -10,6 +10,11 @@ public class City {
 	private int lisa, bart;
 	public City() {
 		map = new Pair[nStreets][nAvenues * 10];
+		for (int i = 0; i < nStreets; i++) {
+			for (int j = 0; j < nAvenues * 10; j++) {
+				map[i][((avenue * 10) + (letter - 'A')) - 1] = new Pair(i, j/10, (char)((j % 10) + (int)'A'));
+			}
+		}
 	}
 	public void setupMap(File inputFile) throws Exception {
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
@@ -20,9 +25,11 @@ public class City {
 				curr.next(); //Lisa
 				lisa = curr.nextInt();
 			}
+			int street = curr.substring(0, curr.length() - 1);
+			int avenue = sc.next().substring(0, curr.length() - 1);
+			char letter = sc.next().charAt(0);
+			map[street - 1][((avenue * 10) + (letter - 'A')) - 1].addDeliver();
 		}
-
-
 	}
 	public Pair[][] getMap() {
 		return this.map;

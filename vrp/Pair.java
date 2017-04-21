@@ -5,11 +5,11 @@ public class Pair {
 	private int avenue;
 	private int deliver;
 
-	public Pair(char name, int street, int avenue, int deliver) {
+	public Pair(int street, int avenue, char name) {
 		this.name = name;
 		this.street = street;
 		this.avenue = avenue;
-		this.deliver = deliver;
+		this.deliver = 0;
 	}
 	
 	public void setName(char name) { this.name = name; }
@@ -24,7 +24,9 @@ public class Pair {
 
 	public int getAvenue() { return this.avenue; }
 
-	public void setDeliver(boolean deliver) { this.deliver = deliver; }
+	public void setDeliver(int deliver) { this.deliver = deliver; }
 
-	public boolean getDeliver() { return this.deliver; }
+	public int getDeliver() { return this.deliver; }
+
+	public void addDeliver() { this.deliver++; }
 }
