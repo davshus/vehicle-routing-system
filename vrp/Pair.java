@@ -17,6 +17,18 @@ public class Pair {
 		this.deliver = 0;
 		this.pairFrom = null;
 	}
+
+	public int distanceTo(Pair nextPair){
+		int xdist = Math.abs(nextPair.getStreet() - this.street) * 200;
+		int ydist = Math.abs(nextPair.getAvenue() - this.avenue);
+		if (ydist < 10){
+			int first = nextPair.getAvenue() % 10;
+			int second = this.avenue % 10;
+			ydist = ((first + second) < ((10 - first) + (10 - second))) ? (first + second) : ((10 - first) + (10 - second));
+		}
+		ydist *= 100;
+		return ydist + xdist;
+	}
 	
 	public void setPair(Pair newPair){ this.pairFrom = newPair; }
 

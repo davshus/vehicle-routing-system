@@ -74,10 +74,10 @@ public class City {
 
 		searched[street][avenue] = true;
 
-		Pair fillerPair = new Pair();
+		Pair currSearch = new Pair();
 
 		while(searchQueue.peek() != null){
-			Pair currSearch = (Pair) searchQueue.poll();
+			currSearch = (Pair) searchQueue.poll();
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
 				System.out.println("A Pair was found");
@@ -85,8 +85,9 @@ public class City {
 				return new returnStatements(startPoint, finalPair, dist);
 			}
 		}
-		//just for error stuf
-		return null;
+
+		returnStatements returnThing = new returnStatements(currSearch, startPoint, currSearch.distanceTo(startPoint));
+		return returnThing;
 	}
 
 	public Pair addNextTo(Pair point){
