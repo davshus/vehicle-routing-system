@@ -34,10 +34,25 @@ public class City {
 
 
 
+
+	public findDistance(Pair startPair){
+		int distance = 0;
+		Pair currentToCheck = startPair;
+		while(currentToCheck != null{
+			int distX = Math.abs(currentToCheck.getStreet() - currentToCheck.getPair().getStreet());
+			int distY = Math.abs(currentToCheck.getAvenue() - currentToCheck.getPair().getAvenue());
+			distance += distX * 200;
+			distance += distX * 100;
+			currentToCheck = currentToCheck.getPair();
+		}
+		return distance
+
+	}
+
 	Queue searchQueue = new LinkedList();
 	boolean[][] searched = new boolean[250][500];
 
-	public Pair floodFill(Pair startPoint){
+	public returnStatements nearestTo(Pair startPoint){
 		int street = startPoint.getStreet();
 		int avenue = startPoint.getAvenue();
 		addNextTo(startPoint);
@@ -51,18 +66,18 @@ public class City {
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
 				System.out.println("A Pair was found");
-				return finalPair;
+				int dist = findDistance()
+				return new returnStatements(startPoint, finalPair, dist);
 			}
 		}
 		//just for error stuf
-		return fillerPair;
+		return null;
 	}
 
 	public Pair addNextTo(Pair point){
 		nextFoundPoint(point);
 		int x = point.getStreet();
 		int y = point.getAvenue();
-
 
 		ArrayList<int[]> points = new ArrayList<int[]>();
 		int[] ex = new int[2];
@@ -91,10 +106,8 @@ public class City {
 				points.add(ex);
 			}
 		}
-		int[][] arr = new int[points.size()][2];
-		arr = points.toArray(arr);
 
-		for (int[] i : arr){
+		for (int[] i : points){
 			if (searched[i[0]][i[1]] == false){
 				map[i[0]][i[1]].setPair(point);
 				if(nextFoundPoint(map[i[0]][i[1]])){
@@ -122,39 +135,24 @@ public class City {
 			return true;
 		}
 		return false;
-	}	
-
-	public int[][] findAllNextTo(int x, int y){
-		ArrayList<int[]> points = new ArrayList<int[]>();
-		int[] ex = new int[2];
-		ex[0] = x;
-		ex[1] = y + 1;
-		points.add(ex);
-		if (y != 498){ 
-			points.add(ex); 
-			ex[1] ++;
-		}
-		if (y != 0){
-			ex[1] = y - 1;
-			points.add(ex);
-			ex[1]--;
-			points.add(ex);
-		}
-
-		if (y % 10 == 0){
-			if (x != 0){
-				ex[0] = x - 1;
-				ex[1] = y;
-				points.add(ex);
-			}
-			if (x != 250){
-				ex[0] = x + 1;
-				points.add(ex);
-			}
-		}
-		int[][] arr = new int[points.size()][2];
-		arr = points.toArray(arr);
-		return arr;
 	}
 
+}
+
+public class returnStatements{
+	Pair startPair;
+	Pair endPair;
+	int distance;
+
+	public returnStatements(Pair start, Pair end, int dist){
+		this.startPair = start;
+		this.endPair = end;
+		this.distance = dist;
+	}
+
+	public Pair getStart(){ return startPair; }
+
+	public Pair getEnd(){ return this.endPair; }
+
+	public int getDistance(){ return this.distance; }
 }
