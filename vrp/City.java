@@ -77,7 +77,9 @@ public class City {
 		Pair currSearch = new Pair();
 
 		while(searchQueue.peek() != null){
+			System.out.println("\n\n\n\n\n\n\n\n\n\n");
 			currSearch = (Pair) searchQueue.poll();
+			searched[currSearch.getStreet()][currSearch.getAvenue()] = true;
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
 				System.out.println("A Pair was found");
@@ -86,50 +88,58 @@ public class City {
 			}
 		}
 
-		Path returnThing = new Path(currSearch, startPoint, currSearch.distanceTo(startPoint));
-		return returnThing;
+		// Path returnThing = new Path(currSearch, startPoint, currSearch.distanceTo(startPoint));
+		return null;
 	}
 
 	public Pair addNextTo(Pair point){
 		nextFoundPoint(point);
 		int x = point.getStreet();
 		int y = point.getAvenue();
-
-		ArrayList<int[]> points = new ArrayList<int[]>();
-		int[] ex = new int[2];
-		ex[0] = x;
-		ex[1] = y + 1;
-		points.add(ex);
-		if (y != 498){ 
-			points.add(ex); 
-			ex[1] ++;
-		}
-		if (y != 0){
-			ex[1] = y - 1;
+		if(y % 2 == 0){
+			ArrayList<int[]> points = new ArrayList<int[]>();
+			int[] ex = new int[2];
+			ex[0] = x;
+			ex[1] = y + 1;
 			points.add(ex);
-			ex[1]--;
-			points.add(ex);
-		}
-
-		if (y % 10 == 0){
-			if (x != 0){
-				ex[0] = x - 1;
-				ex[1] = y;
+			if (y != 498){ 
+				points.add(ex); 
+				ex[1]++;
 				points.add(ex);
 			}
-			if (x != 250){
-				ex[0] = x + 1;
+			ex[1] = y;
+			if (y != 0){
+				System.out.println("yyyy" + y);
+				ex[1] = y - 1;
+				points.add(ex);
+				ex[1] = y - 2;
 				points.add(ex);
 			}
-		}
 
-		for (int[] i : points){
-			if (searched[i[0]][i[1]] == false){
-				map[i[0]][i[1]].setPair(point);
-				if(nextFoundPoint(map[i[0]][i[1]])){
-					return map[i[0]][i[1]];
-				}else{
-					searchQueue.add(map[i[0]][i[1]]);
+			if (y % 10 == 0){
+				if (x != 0){
+					ex[0] = x - 1;
+					ex[1] = y;
+					points.add(ex);
+				}
+				if (x != 250){
+					ex[0] = x + 1;
+					points.add(ex);
+				}
+			}
+
+			for (int[] i : points){
+				System.out.println("X: " + i[0]);
+				System.out.println("Y: " + i[1]);
+
+
+				if (!searched[i[0]][i[1]]){
+					map[i[0]][i[1]].setPair(point);
+					if(nextFoundPoint(map[i[0]][i[1]])){
+						return map[i[0]][i[1]];
+					}else{
+						searchQueue.add(map[i[0]][i[1]]);
+					}
 				}
 			}
 		}
