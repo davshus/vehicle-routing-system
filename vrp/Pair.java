@@ -6,6 +6,10 @@ public class Pair {
 	private int deliver;
 	private Pair pairFrom;
 
+	public Pair() {
+		//Empty Pair
+	}
+
 	public Pair(int street, int avenue, char name) {
 		this.name = name;
 		this.street = street;

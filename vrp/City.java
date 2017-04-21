@@ -12,24 +12,30 @@ public class City {
 		map = new Pair[nStreets][nAvenues * 10];
 		for (int i = 0; i < nStreets; i++) {
 			for (int j = 0; j < nAvenues * 10; j++) {
-				map[i][((avenue * 10) + (letter - 'A')) - 1] = new Pair(i, j/10, (char)((j % 10) + (int)'A'));
+				map[i][j] = new Pair(i + 1, (j/10) + 1, (char)((j % 10) + (int)'A'));
 			}
 		}
 	}
 	public void setupMap(File inputFile) throws Exception {
+		System.out.println("Setting up Homerville...");
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
-		while (sc.hasNext()) {
-			String curr = sc.next();
-			if (curr.equals("Bart Complex")) {
+		System.out.println("Cycle: " + sc.next() + " House Number: " + sc.next());
+		while (sc.hasNext()) { //NOTE: Possible change to fixed house number counter?
+			String streetStr = sc.next();
+			if (streetStr.equals("Bart Complex")) {
 				bart = sc.nextInt();
 				sc.next(); //Lisa
 				lisa = sc.nextInt();
+				break;
 			}
-			int street = curr.substring(0, curr.length() - 1);
-			int avenue = sc.next().substring(0, curr.length() - 1);
+			System.out.println(streetStr);
+			int street = Integer.parseInt(streetStr.substring(0, streetStr.length() - 1));
+			String aveStr = sc.next();
+			int avenue = Integer.parseInt(aveStr.substring(0, aveStr.length() - 1));
 			char letter = sc.next().charAt(0);
-			map[street - 1][((avenue * 10) + (letter - 'A')) - 1].addDeliver();
+			map[street - 1][(((avenue - 1) * 10) + (letter - 'A'))].addDeliver();
 		}
+		System.out.println(bart + " " + lisa);
 	}
 	public Pair[][] getMap() {
 		return this.map;
@@ -44,21 +50,21 @@ public class City {
 
 
 
-	public findDistance(Pair startPair){
+	public int findDistance(Pair startPair){
 		int distance = 0;
 		Pair currentToCheck = startPair;
-		while(currentToCheck != null{
+		while(currentToCheck != null) {
 			int distX = Math.abs(currentToCheck.getStreet() - currentToCheck.getPair().getStreet());
 			int distY = Math.abs(currentToCheck.getAvenue() - currentToCheck.getPair().getAvenue());
 			distance += distX * 200;
 			distance += distX * 100;
 			currentToCheck = currentToCheck.getPair();
 		}
-		return distance
+		return distance;
 
 	}
 
-	Queue searchQueue = new LinkedList();
+	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched = new boolean[250][500];
 
 	public returnStatements nearestTo(Pair startPoint){
@@ -75,7 +81,7 @@ public class City {
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
 				System.out.println("A Pair was found");
-				int dist = findDistance()
+				int dist = findDistance(finalPair);
 				return new returnStatements(startPoint, finalPair, dist);
 			}
 		}
@@ -146,22 +152,4 @@ public class City {
 		return false;
 	}
 
-}
-
-public class returnStatements{
-	Pair startPair;
-	Pair endPair;
-	int distance;
-
-	public returnStatements(Pair start, Pair end, int dist){
-		this.startPair = start;
-		this.endPair = end;
-		this.distance = dist;
-	}
-
-	public Pair getStart(){ return startPair; }
-
-	public Pair getEnd(){ return this.endPair; }
-
-	public int getDistance(){ return this.distance; }
 }
