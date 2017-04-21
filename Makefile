@@ -3,7 +3,7 @@ CLASSES = \
 	vrp/Avenue.java \
 	vrp/City.java \
 	vrp/Main.java \
-	vrp/returnStatements.java
+	vrp/Path.java
 
 all:
 	javac $(CLASSES)

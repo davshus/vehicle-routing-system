@@ -1,10 +1,10 @@
 package vrp;
-public class returnStatements{
+public class Path{
 	Pair startPair;
 	Pair endPair;
 	int distance;
 
-	public returnStatements(Pair start, Pair end, int dist){
+	public Path(Pair start, Pair end, int dist){
 		this.startPair = start;
 		this.endPair = end;
 		this.distance = dist;

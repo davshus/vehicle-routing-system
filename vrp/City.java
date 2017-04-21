@@ -67,7 +67,7 @@ public class City {
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched = new boolean[250][500];
 
-	public returnStatements nearestTo(Pair startPoint){
+	public Path nearestTo(Pair startPoint){
 		int street = startPoint.getStreet();
 		int avenue = startPoint.getAvenue();
 		addNextTo(startPoint);
@@ -82,11 +82,11 @@ public class City {
 			if (finalPair != null){
 				System.out.println("A Pair was found");
 				int dist = findDistance(finalPair);
-				return new returnStatements(startPoint, finalPair, dist);
+				return new Path(startPoint, finalPair, dist);
 			}
 		}
 
-		returnStatements returnThing = new returnStatements(currSearch, startPoint, currSearch.distanceTo(startPoint));
+		Path returnThing = new Path(currSearch, startPoint, currSearch.distanceTo(startPoint));
 		return returnThing;
 	}
 
