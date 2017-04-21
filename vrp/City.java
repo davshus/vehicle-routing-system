@@ -53,9 +53,12 @@ public class City {
 	public int findDistance(Pair startPair){
 		int distance = 0;
 		Pair currentToCheck = startPair;
-		while(currentToCheck != null) {
+		while(currentToCheck != null && currentToCheck.getPair() != null) {
+			if(currentToCheck == null){System.out.println("FAIL");}
+			System.out.println(currentToCheck.getStreet());
 			int distX = Math.abs(currentToCheck.getStreet() - currentToCheck.getPair().getStreet());
-			int distY = Math.abs(currentToCheck.getAvenue() - currentToCheck.getPair().getAvenue());
+			System.out.println(distX);
+			int distY = Math.abs(calcY(currentToCheck.getAvenue(), currentToCheck.getName()) - calcY(currentToCheck.getPair().getAvenue(), currentToCheck.getPair().getName()));
 			distance += distX * 200;
 			distance += distX * 100;
 			currentToCheck = currentToCheck.getPair();
@@ -69,7 +72,7 @@ public class City {
 
 	public Path nearestTo(Pair startPoint){
 		int street = startPoint.getStreet();
-		int avenue = startPoint.getAvenue();
+		int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
 		addNextTo(startPoint);
 
 		searched[street][avenue] = true;
@@ -79,7 +82,7 @@ public class City {
 		while(searchQueue.peek() != null){
 			System.out.println("\n\n\n\n\n\n\n\n\n\n");
 			currSearch = (Pair) searchQueue.poll();
-			searched[currSearch.getStreet()][currSearch.getAvenue()] = true;
+			searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
 				System.out.println("A Pair was found");
@@ -95,43 +98,53 @@ public class City {
 	public Pair addNextTo(Pair point){
 		nextFoundPoint(point);
 		int x = point.getStreet();
-		int y = point.getAvenue();
+		int y = calcY(point.getAvenue(), point.getName());
+		System.out.println("yyyy: " + y);
 		if(y % 2 == 0){
 			ArrayList<int[]> points = new ArrayList<int[]>();
-			int[] ex = new int[2];
-			ex[0] = x;
-			ex[1] = y + 1;
-			points.add(ex);
+			// int[] ex = new int[2];
+			// ex[0] = x;
+			// ex[1] = y + 1;
+			// points.add(ex);
 			if (y != 498){ 
-				points.add(ex); 
-				ex[1]++;
-				points.add(ex);
+				points.add(new int[]{x, y + 1}); 
+				// ex[1]++;
+				// points.add(ex);
+				points.add(new int[]{x, y + 2});
 			}
-			ex[1] = y;
+			// ex[1] = y;
 			if (y != 0){
-				System.out.println("yyyy" + y);
-				ex[1] = y - 1;
-				points.add(ex);
-				ex[1] = y - 2;
-				points.add(ex);
+				
+				// ex[1] = y - 1;
+				// points.add(ex);
+				points.add(new int[] {x, y - 1});
+				// ex[1] = y - 2;
+				// points.add(ex);
+				points.add(new int[] {x, y - 2});
 			}
 
 			if (y % 10 == 0){
 				if (x != 0){
-					ex[0] = x - 1;
-					ex[1] = y;
-					points.add(ex);
+					// ex[0] = x - 1;
+					// ex[1] = y;
+					// points.add(ex);
+					points.add(new int[] {x - 1, x});
 				}
 				if (x != 250){
-					ex[0] = x + 1;
-					points.add(ex);
+					// ex[0] = x + 1;
+					// points.add(ex);
+					points.add(new int[] {x + 1, y});
 				}
 			}
+
+			System.out.println("yyyy: " + y);
 
 			for (int[] i : points){
 				System.out.println("X: " + i[0]);
 				System.out.println("Y: " + i[1]);
 
+
+				
 
 				if (!searched[i[0]][i[1]]){
 					map[i[0]][i[1]].setPair(point);
@@ -164,6 +177,6 @@ public class City {
 	}
 
 	public int calcY(int ave, char name) {
-		return ((avenue - 1) * 10) + (letter - 'A');
+		return ((ave - 1) * 10) + (name - 'A');
 	}
 }

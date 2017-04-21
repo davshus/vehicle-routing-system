@@ -20,9 +20,9 @@ public class Pair {
 
 	public int distanceTo(Pair nextPair){
 		int xdist = Math.abs(nextPair.getStreet() - this.street) * 200;
-		int ydist = Math.abs(nextPair.getAvenue() - this.avenue);
+		int ydist = Math.abs(calcY(nextPair.getAvenue(), nextPair.getName()) - calcY(this.avenue, this.name));
 		if (ydist < 10){
-			int first = nextPair.getAvenue() % 10;
+			int first = calcY(nextPair.getAvenue(), nextPair.getName()) % 10;
 			int second = this.avenue % 10;
 			ydist = ((first + second) < ((10 - first) + (10 - second))) ? (first + second) : ((10 - first) + (10 - second));
 		}
@@ -51,4 +51,8 @@ public class Pair {
 	public int getDeliver() { return this.deliver; }
 
 	public void addDeliver() { this.deliver++; }
+
+	public int calcY(int ave, char name) {
+		return ((ave - 1) * 10) + (name - 'A');
+	}
 }
