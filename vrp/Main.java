@@ -30,7 +30,7 @@ public class Main {
 		// 	System.out.println(curr.getStreet() + " " + curr.getAvenue() + " " + curr.getName() + " " + curr.getDeliver());
 		// }
 
-		int totalDistance = 0;
+		long totalDistance = 0;
 		int totalPackages = 0;
 
 		Pair startPoint = hv.getMap()[126][220];
@@ -39,10 +39,12 @@ public class Main {
 		while(currentPair != null){
 			Path nextPath = hv.nearestTo(currentPair);
 			if (nextPath != null){
+				System.out.println("One thing found");
 				totalDistance += nextPath.getDistance();
 				currentPair = nextPath.getEnd();
 				totalPackages += currentPair.getDeliver();
 			}else{
+				System.out.println("BROKENNNNNNN");
 				break;
 			}
 		}

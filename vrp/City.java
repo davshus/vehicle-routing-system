@@ -28,7 +28,7 @@ public class City {
 				lisa = sc.nextInt();
 				break;
 			}
-			System.out.println(streetStr);
+			// System.out.println(streetStr);
 			int street = Integer.parseInt(streetStr.substring(0, streetStr.length() - 1));
 			String aveStr = sc.next();
 			int avenue = Integer.parseInt(aveStr.substring(0, aveStr.length() - 1));
@@ -54,10 +54,9 @@ public class City {
 		int distance = 0;
 		Pair currentToCheck = startPair;
 		while(currentToCheck != null && currentToCheck.getPair() != null) {
-			if(currentToCheck == null){System.out.println("FAIL");}
-			System.out.println(currentToCheck.getStreet());
+
+			// System.out.println(currentToCheck.getPair().getStreet());
 			int distX = Math.abs(currentToCheck.getStreet() - currentToCheck.getPair().getStreet());
-			System.out.println(distX);
 			int distY = Math.abs(calcY(currentToCheck.getAvenue(), currentToCheck.getName()) - calcY(currentToCheck.getPair().getAvenue(), currentToCheck.getPair().getName()));
 			distance += distX * 200;
 			distance += distX * 100;
@@ -80,7 +79,7 @@ public class City {
 		Pair currSearch = new Pair();
 
 		while(searchQueue.peek() != null){
-			System.out.println("\n\n\n\n\n\n\n\n\n\n");
+			System.out.print("\n");
 			currSearch = (Pair) searchQueue.poll();
 			searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
 			Pair finalPair = addNextTo(currSearch);
@@ -90,8 +89,6 @@ public class City {
 				return new Path(startPoint, finalPair, dist);
 			}
 		}
-
-		// Path returnThing = new Path(currSearch, startPoint, currSearch.distanceTo(startPoint));
 		return null;
 	}
 
@@ -99,52 +96,32 @@ public class City {
 		nextFoundPoint(point);
 		int x = point.getStreet();
 		int y = calcY(point.getAvenue(), point.getName());
-		System.out.println("yyyy: " + y);
 		if(y % 2 == 0){
 			ArrayList<int[]> points = new ArrayList<int[]>();
-			// int[] ex = new int[2];
-			// ex[0] = x;
-			// ex[1] = y + 1;
-			// points.add(ex);
 			if (y != 498){ 
 				points.add(new int[]{x, y + 1}); 
-				// ex[1]++;
-				// points.add(ex);
 				points.add(new int[]{x, y + 2});
 			}
-			// ex[1] = y;
 			if (y != 0){
-				
-				// ex[1] = y - 1;
-				// points.add(ex);
 				points.add(new int[] {x, y - 1});
-				// ex[1] = y - 2;
-				// points.add(ex);
 				points.add(new int[] {x, y - 2});
 			}
 
 			if (y % 10 == 0){
 				if (x != 0){
-					// ex[0] = x - 1;
-					// ex[1] = y;
-					// points.add(ex);
 					points.add(new int[] {x - 1, x});
 				}
 				if (x != 250){
-					// ex[0] = x + 1;
-					// points.add(ex);
 					points.add(new int[] {x + 1, y});
 				}
 			}
 
-			System.out.println("yyyy: " + y);
+			System.out.println("X: " + x);
+			System.out.println("Y: " + y);
 
 			for (int[] i : points){
-				System.out.println("X: " + i[0]);
-				System.out.println("Y: " + i[1]);
-
-
-				
+				// System.out.println("X: " + i[0]);
+				// System.out.println("Y: " + i[1]);
 
 				if (!searched[i[0]][i[1]]){
 					map[i[0]][i[1]].setPair(point);
@@ -162,7 +139,8 @@ public class City {
 
 	public boolean nextFoundPoint(Pair nextPair){
 		if(nextPair.getDeliver() > 0){
-			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
+			nextPair.setDeliver(0);
+			// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
 			while(searchQueue.peek() != null){
 				try{
 					searchQueue.remove();	
