@@ -15,4 +15,10 @@ public class Path{
 	public Pair getEnd(){ return this.endPair; }
 
 	public int getDistance(){ return this.distance; }
+
+	public void reverse() {
+		Pair tmp = this.startPair;
+		this.startPair = this.endPair;
+		this.endPair = tmp;
+	}
 }
