@@ -72,7 +72,13 @@ public class City {
 	public Path nearestTo(Pair startPoint){
 		int street = startPoint.getStreet();
 		int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
-		addNextTo(startPoint);
+		if (avenue % 2 == 1){
+			addNextTo(map[street][avenue + 1]);
+			addNextTo(map[street][avenue - 1]);
+		}else{
+			addNextTo(startPoint);	
+		}
+		
 
 		searched[street][avenue] = true;
 
@@ -128,7 +134,9 @@ public class City {
 					if(nextFoundPoint(map[i[0]][i[1]])){
 						return map[i[0]][i[1]];
 					}else{
-						searchQueue.add(map[i[0]][i[1]]);
+						if (!searched[i[0]][i[1]]){
+							searchQueue.add(map[i[0]][i[1]]);
+						}
 					}
 				}
 			}
@@ -138,8 +146,12 @@ public class City {
 	}
 
 	public boolean nextFoundPoint(Pair nextPair){
+
+		searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
+
 		if(nextPair.getDeliver() > 0){
 			nextPair.setDeliver(0);
+
 			// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
 			while(searchQueue.peek() != null){
 				try{

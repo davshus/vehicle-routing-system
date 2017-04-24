@@ -43,7 +43,9 @@ public class Main {
 				totalDistance += nextPath.getDistance();
 				currentPair = nextPath.getEnd();
 				totalPackages += currentPair.getDeliver();
+				System.out.println("Current Path:   " + currentPair.getName() + "  " + currentPair.calcY(currentPair.getAvenue(), currentPair.getName()));
 			}else{
+				System.out.println(currentPair.getName() + "   " + nextPath);
 				System.out.println("BROKENNNNNNN");
 				break;
 			}
