@@ -16,6 +16,7 @@ public class City {
 			}
 		}
 	}
+
 	public void setupMap(File inputFile) throws Exception {
 		System.out.println("Setting up Homerville...");
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
@@ -46,9 +47,6 @@ public class City {
 	public int getLisa() {
 		return this.lisa;
 	}
-
-
-
 
 	public int findDistance(Pair startPair){
 		int distance = 0;

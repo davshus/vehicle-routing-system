@@ -7,13 +7,16 @@ import vrp.Pair;
 import vrp.City;
 public class Main {
 
+	static PrintWriter writer;
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		City hv = null;
 		try {
+			writer = new PrintWriter("verify.txt", "UTF-8");
 			hv = new City();
 			hv.setupMap(new File(sc.nextLine()));
+			// write("Start With Point: 126 22 A")
 		} catch (Exception e) {
 			System.out.println("There was an error while setting up Homerville: " + e.getMessage());
 			e.printStackTrace();
@@ -43,10 +46,12 @@ public class Main {
 				totalDistance += nextPath.getDistance();
 				currentPair = nextPath.getEnd();
 				totalPackages += currentPair.getDeliver();
-				System.out.println("Current Path:   " + currentPair.getName() + "  " + currentPair.calcY(currentPair.getAvenue(), currentPair.getName()));
+				write(currentPair.getStreet() + " " + currentPair.calcY(currentPair.getAvenue(), currentPair.getName()) + " " + currentPair.getName() + " " + nextPath.getDistance());
+				System.out.println(currentPair.getName() + "  " + currentPair.calcY(currentPair.getAvenue(), currentPair.getName()));
 			}else{
 				System.out.println(currentPair.getName() + "   " + nextPath);
 				System.out.println("BROKENNNNNNN");
+				writer.close();
 				break;
 			}
 		}
@@ -55,4 +60,10 @@ public class Main {
 		System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + totalDistance * 3));
 
 	}
+
+	public static void write(String output){
+		writer.println(output);
+	}
+
+
 }
