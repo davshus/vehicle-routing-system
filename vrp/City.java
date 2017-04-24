@@ -5,6 +5,9 @@ import vrp.Pair;
 import vrp.Avenue;
 import tinshoes.geom.Point;
 public class City {
+
+	public int totalPackages;
+	public int getPackages(){ return totalPackages; }
 	public static int nStreets = 250, nAvenues = 50;
 	private Pair[][] map;
 	private int lisa, bart;
@@ -15,6 +18,7 @@ public class City {
 				map[i][j] = new Pair(i + 1, (j/10) + 1, (char)((j % 10) + (int)'A'));
 			}
 		}
+		totalPackages = 0;
 	}
 
 	public void setupMap(File inputFile) throws Exception {
@@ -36,7 +40,7 @@ public class City {
 			char letter = sc.next().charAt(0);
 			map[street - 1][calcY(avenue, letter)].addDeliver();
 		}
-		System.out.println(bart + " " + lisa);
+		// System.out.println(bart + " " + lisa);
 	}
 	public Pair[][] getMap() {
 		return this.map;
@@ -67,6 +71,8 @@ public class City {
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched = new boolean[250][500];
 
+
+
 	public Path nearestTo(Pair startPoint){
 		int street = startPoint.getStreet();
 		int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
@@ -83,12 +89,11 @@ public class City {
 		Pair currSearch = new Pair();
 
 		while(searchQueue.peek() != null){
-			System.out.print("\n");
 			currSearch = (Pair) searchQueue.poll();
 			searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
 			Pair finalPair = addNextTo(currSearch);
 			if (finalPair != null){
-				System.out.println("A Pair was found");
+				// System.out.println("A Pair was found");
 				int dist = findDistance(finalPair);
 				return new Path(startPoint, finalPair, dist);
 			}
@@ -120,8 +125,8 @@ public class City {
 				}
 			}
 
-			System.out.println("X: " + x);
-			System.out.println("Y: " + y);
+			// System.out.println("X: " + x);
+			// System.out.println("Y: " + y);
 
 			for (int[] i : points){
 				// System.out.println("X: " + i[0]);
@@ -148,15 +153,22 @@ public class City {
 		searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
 
 		if(nextPair.getDeliver() > 0){
+			totalPackages += nextPair.getDeliver();
+			System.out.println( );
 			nextPair.setDeliver(0);
 
-			// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
+			System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
 			while(searchQueue.peek() != null){
 				try{
 					searchQueue.remove();	
 				}catch(Exception e){
 					System.out.println("Removal failed");
 					return true;
+				}
+			}
+			for (int i = 0; i < searched.length; i++){
+				for (int j = 0; j < searched[0].length; j++){
+					searched[i][j] = false;
 				}
 			}
 			return true;
