@@ -15,8 +15,8 @@ public class Main {
 		try {
 			writer = new PrintWriter("verify.txt", "UTF-8");
 			hv = new City();
-			// hv.setupMap(new File(sc.nextLine()));
-			hv.setupMap(new File("cycle1PRACTICE.txt"));
+			hv.setupMap(new File(sc.nextLine()));
+			// hv.setupMap(new File("cycle1PRACTICE.txt"));
 			// write("Start With Point: 126 22 A")
 		} catch (Exception e) {
 			System.out.println("There was an error while setting up Homerville: " + e.getMessage());
