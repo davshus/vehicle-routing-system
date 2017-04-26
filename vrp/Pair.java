@@ -63,4 +63,5 @@ public class Pair {
 	public int calcY(int ave, char name) {
 		return ((ave - 1) * 10) + (name - 'A');
 	}
+	public String toString() { return "(" + street + ", " + avenue + ", " + name + ")"; }
 }

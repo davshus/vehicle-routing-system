@@ -3,7 +3,7 @@ import java.io.File;
 import java.util.*;
 import vrp.Pair;
 import vrp.Avenue;
-import tinshoes.geom.Point;
+//import tinshoes.geom.Point;
 public class City {
 
 	public int totalPackages;
@@ -113,22 +113,24 @@ public class City {
 			if (l != null) {
 				return t.pathTo(l);
 			}
-			start = map[t.getStreet()][calcY(t) + 1];
+			start = map[t.getStreet()][calcY(t) + (calcY(t) != (nAvenues * 10) - 1 ? 1 : -1)];
 		} else {
 			start = t;
 		}
 		//Implementation of modified flood fill
-		searched = new boolean[250][500];
+		searched = new boolean[nStreets][nAvenues * 10];
 		// Arrays.fill(searched, Arrays.fill(new boolean[250], false));
 		for (int i = 0; i < searched.length; i++)
 			for (int j = 0; j < searched[0].length; j++)
 				searched[i][j] = false;
+		searched[start.getStreet()][calcY(start)] = true;
 		ArrayList<Pair> ring = new ArrayList<Pair>();
 		ring.add(start);
+		boolean debug = false;//totalPackages > 776;
 		while (true) {
 			if (ring.isEmpty()) return null;
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
-			System.out.println(Arrays.toString(ring.toArray()));
+			if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
 				if (p.getDeliver() > 0) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
@@ -144,19 +146,25 @@ public class City {
 					return start.pathTo(map[upDown.getStreet()][calcY(upDown)]);
 				}
 				newRing.addAll(calcAround(p));
+				if (debug) System.out.println(calcY(p));
 			}
-			System.out.println(Arrays.toString(ring.toArray()));
+			if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			ring = newRing;
-			System.out.println(Arrays.toString(ring.toArray()));
-			new Scanner(System.in).next();
+			if (debug) System.out.println(Arrays.toString(ring.toArray()));
+			if (debug) new Scanner(System.in).next();
 		}
 
 	}
 	public Pair checkUpDown(Pair center) {
 		//CENTER Y MUST BE EVEN
-		int y = calcY(center.getAvenue(), center.getName()), x = center.getStreet();
+		// System.out.println(center);
+		if (calcY(center) % 2 != 0) {
+			// System.out.println("CENTER NOT EVEN");
+//			new Scanner(System.in).next();
+		}
+		int y = calcY(center), x = center.getStreet();
 		// System.out.println(x + " " + y);
-		if (!searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
+		if (y != (nAvenues * 10) - 1 && !searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
 			searched[x][y + 1] = true;
 			return map[x][y + 1];
 		}
@@ -164,12 +172,17 @@ public class City {
 			searched[x][y - 1] = true;
 			return map[x][y - 1];
 		}
-		searched[x][y + 1] = true;
+		if (y != (nAvenues * 10) - 1) searched[x][y + 1] = true;
 		if (y != 0) searched[x][y - 1] = true;
 		return null;
 	}
 	public ArrayList<Pair> calcAround(Pair center) {
 		//CENTER Y MUST BE EVEN
+		if (calcY(center) % 2 != 0) {
+			// System.out.println("CENTER NOT EVEN");
+			// new Scanner(System.in).next();
+		}
+                // System.out.println(center);
 		ArrayList<Pair> ans = new ArrayList<Pair>();
 		int x = center.getStreet(), y = calcY(center);
 		if (y % 10 == 0) {
@@ -186,7 +199,7 @@ public class City {
 			ans.add(map[x][y - 2]);
 			searched[x][y - 2] = true;
 		}
-		if (y != nAvenues - 2 && !searched[x][y + 2]) {
+		if (y != (nAvenues * 10) - 2 && !searched[x][y + 2]) {
 			ans.add(map[x][y + 2]);
 			searched[x][y + 2] = true;
 		}
