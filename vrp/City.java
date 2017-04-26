@@ -7,7 +7,7 @@ import tinshoes.geom.Point;
 public class City {
 
 	public int totalPackages;
-	public int getPackages(){ return totalPackages; }
+	public int getDeliver(){ return totalPackages; }
 	public static int nStreets = 250, nAvenues = 50;
 	private Pair[][] map;
 	private int lisa, bart;
@@ -69,130 +69,211 @@ public class City {
 	}
 
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
-	boolean[][] searched = new boolean[250][500];
+	boolean[][] searched;
 
 
 
-	public Path nearestTo(Pair startPoint){
-		int street = startPoint.getStreet();
-		int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
-		if (avenue % 2 == 1){
-			if(addNextTo(map[street][avenue + 1]) != null){
-				System.out.println("test1");
-				return new Path(startPoint, map[street][avenue + 1], 1);
-			}else if (addNextTo(map[street][avenue - 1]) != null){
-				System.out.println("test2");
-				return new Path(startPoint, map[street][avenue - 1], 1);
-			}
+	// public Path nearestTo(Pair startPoint){
+	// 	int street = startPoint.getStreet();
+	// 	int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
+	// 	if (avenue % 2 == 1){
+	// 		if(addNextTo(map[street][avenue + 1]) != null){
+	// 			System.out.println("test1");
+	// 			return new Path(startPoint, map[street][avenue + 1], 1);
+	// 		}else if (addNextTo(map[street][avenue - 1]) != null){
+	// 			System.out.println("test2");
+	// 			return new Path(startPoint, map[street][avenue - 1], 1);
+	// 		}
 
-		}else{
-			addNextTo(startPoint);
-		}
+	// 	}else{
+	// 		addNextTo(startPoint);
+	// 	}
 		
 
-		searched[street][avenue] = true;
+	// 	searched[street][avenue] = true;
 
-		Pair currSearch = new Pair();
+	// 	Pair currSearch = new Pair();
 
-		while(searchQueue.peek() != null){
-			currSearch = (Pair) searchQueue.poll();
-			searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
-			Pair finalPair = addNextTo(currSearch);
-			if (finalPair != null){
-				// System.out.println("A Pair was found");
-				int dist = findDistance(finalPair);
-				return new Path(startPoint, finalPair, dist);
+	// 	while(searchQueue.peek() != null){
+	// 		currSearch = (Pair) searchQueue.poll();
+	// 		searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
+	// 		Pair finalPair = addNextTo(currSearch);
+	// 		if (finalPair != null){
+	// 			// System.out.println("A Pair was found");
+	// 			int dist = findDistance(finalPair);
+	// 			return new Path(startPoint, finalPair, dist);
+	// 		}
+	// 	}
+	// 	return null;
+	// }
+	public Path nearestTo(Pair t) {
+		Pair start = null;
+		if (calcY(t) % 2 != 0) {
+			Pair l = checkUpDown(t);
+			if (l != null) {
+				return t.pathTo(l);
 			}
+			start = map[t.getStreet()][calcY(t) + (Math.random() < 0.5 ? -1 : 1)];
+		} else {
+			start = t;
 		}
+		//Implementation of modified flood fill
+		searched = new boolean[250][500];
+		// Arrays.fill(searched, Arrays.fill(new boolean[250], false));
+		for (int i = 0; i < searched.length; i++)
+			for (int j = 0; j < searched[0].length; j++)
+				searched[i][j] = false;
+		ArrayList<Pair> ring = new ArrayList<Pair>();
+		ring.add(start);
+		while (true) {
+			if (ring.isEmpty()) return null;
+			ArrayList<Pair> newRing = new ArrayList<Pair>();
+			for (Pair p : ring) {
+				if (p.getDeliver() > 0) {
+					map[p.getStreet()][calcY(p)].deliver();
+					return start.pathTo(map[p.getStreet()][calcY(p)]);
+				}
+				Pair upDown = checkUpDown(p);
+				if (upDown != null) {
+					System.out.println(p.getStreet() + " " + calcY(p));
+					System.out.println(upDown.getStreet() + " " + calcY(upDown));
+					map[upDown.getStreet()][calcY(upDown)].deliver();
+					return start.pathTo(map[upDown.getStreet()][calcY(upDown)]);
+				}
+				newRing.addAll(calcAround(p));
+			}
+			ring = newRing;
+		}
+
+	}
+	public Pair checkUpDown(Pair center) {
+		//CENTER Y MUST BE EVEN
+		int y = calcY(center.getAvenue(), center.getName()), x = center.getStreet();
+		if (!searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
+			searched[x][y + 1] = true;
+			return map[x][y + 1];
+		}
+		if (y != 0 && !searched[x][y - 1] && map[x][y - 1].getDeliver() > 0) {
+			searched[x][y - 1] = true;
+			return map[x][y - 1];
+		}
+		searched[x][y + 1] = true;
+		searched[x][y - 1] = true;
 		return null;
 	}
-
-	public Pair addNextTo(Pair point){
-
-		///SUCH A FUCKING IDIOT - alden - to be fixed
-		// nextFoundPoint(point);
-		int x = point.getStreet();
-		int y = calcY(point.getAvenue(), point.getName());
-		if(y % 2 == 0){
-			ArrayList<int[]> points = new ArrayList<int[]>();
-			if (y != 498){ 
-				points.add(new int[]{x, y + 1}); 
-				points.add(new int[]{x, y + 2});
+	public ArrayList<Pair> calcAround(Pair center) {
+		//CENTER Y MUST BE EVEN
+		ArrayList<Pair> ans = new ArrayList<Pair>();
+		int x = center.getStreet(), y = calcY(center);
+		if (y % 10 == 0) {
+			if (x != 0 && !searched[x - 1][y]) {
+				ans.add(map[x - 1][y]);
+				searched[x - 1][y] = true;
 			}
-			if (y != 0){
-				points.add(new int[] {x, y - 1});
-				points.add(new int[] {x, y - 2});
-			}
-
-			if (y % 10 == 0){
-				if (x != 0){
-					points.add(new int[] {x - 1, x});
-				}
-				if (x != 250){
-					points.add(new int[] {x + 1, y});
-				}
-			}
-			// System.out.println("X: " + x);
-			// System.out.println("Y: " + y);
-
-			for (int[] i : points){
-				// System.out.println("X: " + i[0]);
-				// System.out.println("Y: " + i[1]);
-
-				if (!searched[i[0]][i[1]]){
-					map[i[0]][i[1]].setPair(point);
-					if(nextFoundPoint(map[i[0]][i[1]])){
-						System.out.println("Point found : " + i[0] + "\t" + i[1]);
-						return map[i[0]][i[1]];
-					}else{
-						searchQueue.add(map[i[0]][i[1]]);
-					}
-				}
-			}
-		}else{
-			if(nextFoundPoint(point)){
-				System.out.println("FOUND FAILEEEDDFEEDFEF");
-				return point;
-				// System.out.println("Point found : " + i[0] + "\t" + i[1]);
-				// return map[i[0]][i[1]];
+			if (x != nStreets - 1 && !searched[x + 1][y]) {
+				ans.add(map[x + 1][y]);
+				searched[x + 1][y] = true;
 			}
 		}
-		return null;
-
-	}
-
-	public boolean nextFoundPoint(Pair nextPair){
-
-		//I think the error has to do with this line being here but idk
-		//EIther way we should move it to the correct spot.
-
-		searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
-
-		if(nextPair.getDeliver() > 0){
-			totalPackages += nextPair.getDeliver();
-			nextPair.setDeliver(0);
-
-			// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
-			while(searchQueue.peek() != null){
-				try{
-					searchQueue.remove();	
-				}catch(Exception e){
-					System.out.println("Removal failed");
-					return true;
-				}
-			}
-			// System.out.println("Finished clearing");
-			for (int i = 0; i < searched.length; i++){
-				for (int j = 0; j < searched[0].length; j++){
-					searched[i][j] = false;
-				}
-			}
-			return true;
+		if (y != 0 && !searched[x][y - 2]) {
+			ans.add(map[x][y - 2]);
+			searched[x][y - 2] = true;
 		}
-		return false;
+		if (y != nAvenues - 2 && !searched[x][y + 2]) {
+			ans.add(map[x][y + 2]);
+			searched[x][y + 2] = true;
+		}
+		return ans;
 	}
+	// public Pair addNextTo(Pair point){
+
+	// 	///SUCH A FUCKING IDIOT - alden - to be fixed
+	// 	// nextFoundPoint(point);
+	// 	int x = point.getStreet();
+	// 	int y = calcY(point.getAvenue(), point.getName());
+	// 	if(y % 2 == 0){
+	// 		ArrayList<int[]> points = new ArrayList<int[]>();
+	// 		if (y != 498){ 
+	// 			points.add(new int[]{x, y + 1}); 
+	// 			points.add(new int[]{x, y + 2});
+	// 		}
+	// 		if (y != 0){
+	// 			points.add(new int[] {x, y - 1});
+	// 			points.add(new int[] {x, y - 2});
+	// 		}
+
+	// 		if (y % 10 == 0){
+	// 			if (x != 0){
+	// 				points.add(new int[] {x - 1, x});
+	// 			}
+	// 			if (x != 250){
+	// 				points.add(new int[] {x + 1, y});
+	// 			}
+	// 		}
+	// 		// System.out.println("X: " + x);
+	// 		// System.out.println("Y: " + y);
+
+	// 		for (int[] i : points){
+	// 			// System.out.println("X: " + i[0]);
+	// 			// System.out.println("Y: " + i[1]);
+
+	// 			if (!searched[i[0]][i[1]]){
+	// 				map[i[0]][i[1]].setPair(point);
+	// 				if(nextFoundPoint(map[i[0]][i[1]])){
+	// 					System.out.println("Point found : " + i[0] + "\t" + i[1]);
+	// 					return map[i[0]][i[1]];
+	// 				}else{
+	// 					searchQueue.add(map[i[0]][i[1]]);
+	// 				}
+	// 			}
+	// 		}
+	// 	}else{
+	// 		if(nextFoundPoint(point)){
+	// 			System.out.println("FOUND FAILEEEDDFEEDFEF");
+	// 			return point;
+	// 			// System.out.println("Point found : " + i[0] + "\t" + i[1]);
+	// 			// return map[i[0]][i[1]];
+	// 		}
+	// 	}
+	// 	return null;
+
+	// }
+
+	// public boolean nextFoundPoint(Pair nextPair){
+
+	// 	//I think the error has to do with this line being here but idk
+	// 	//EIther way we should move it to the correct spot.
+
+	// 	searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
+
+	// 	if(nextPair.getDeliver() > 0){
+	// 		totalPackages += nextPair.getDeliver();
+	// 		nextPair.setDeliver(0);
+
+	// 		// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
+	// 		while(searchQueue.peek() != null){
+	// 			try{
+	// 				searchQueue.remove();	
+	// 			}catch(Exception e){
+	// 				System.out.println("Removal failed");
+	// 				return true;
+	// 			}
+	// 		}
+	// 		// System.out.println("Finished clearing");
+	// 		for (int i = 0; i < searched.length; i++){
+	// 			for (int j = 0; j < searched[0].length; j++){
+	// 				searched[i][j] = false;
+	// 			}
+	// 		}
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 
 	public int calcY(int ave, char name) {
 		return ((ave - 1) * 10) + (name - 'A');
+	}
+	public int calcY(Pair p) {
+		return calcY(p.getAvenue(), p.getName());
 	}
 }

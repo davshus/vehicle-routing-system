@@ -12,8 +12,8 @@ public class Pair {
 
 	public Pair(int street, int avenue, char name) {
 		this.name = name;
-		this.street = street;
-		this.avenue = avenue;
+		this.street = street - 1;
+		this.avenue = avenue - 1;
 		this.deliver = 0;
 		this.pairFrom = null;
 	}
@@ -30,6 +30,14 @@ public class Pair {
 		return ydist + xdist;
 	}
 	
+	public Path pathTo(Pair dest) {
+		return new Path(this, dest, distanceTo(dest));
+	}
+
+	public void deliver() {
+		setDeliver(0);
+	}
+
 	public void setPair(Pair newPair){ this.pairFrom = newPair; }
 
 	public Pair getPair(){ return this.pairFrom; }
