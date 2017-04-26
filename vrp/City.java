@@ -38,7 +38,7 @@ public class City {
 			String aveStr = sc.next();
 			int avenue = Integer.parseInt(aveStr.substring(0, aveStr.length() - 1));
 			char letter = sc.next().charAt(0);
-			map[street - 1][calcY(avenue, letter)].addDeliver();
+			map[street - 1][calcY(avenue - 1, letter)].addDeliver();
 		}
 		// System.out.println(bart + " " + lisa);
 	}
@@ -113,7 +113,7 @@ public class City {
 			if (l != null) {
 				return t.pathTo(l);
 			}
-			start = map[t.getStreet()][calcY(t) + (Math.random() < 0.5 ? -1 : 1)];
+			start = map[t.getStreet()][calcY(t) + 1];
 		} else {
 			start = t;
 		}
@@ -149,6 +149,7 @@ public class City {
 	public Pair checkUpDown(Pair center) {
 		//CENTER Y MUST BE EVEN
 		int y = calcY(center.getAvenue(), center.getName()), x = center.getStreet();
+		System.out.println(x + " " + y);
 		if (!searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
 			searched[x][y + 1] = true;
 			return map[x][y + 1];
@@ -158,7 +159,7 @@ public class City {
 			return map[x][y - 1];
 		}
 		searched[x][y + 1] = true;
-		searched[x][y - 1] = true;
+		if (y != 0) searched[x][y - 1] = true;
 		return null;
 	}
 	public ArrayList<Pair> calcAround(Pair center) {
@@ -271,7 +272,8 @@ public class City {
 	// }
 
 	public int calcY(int ave, char name) {
-		return ((ave - 1) * 10) + (name - 'A');
+		// System.out.println(ave);
+		return (ave * 10) + (name - 'A');
 	}
 	public int calcY(Pair p) {
 		return calcY(p.getAvenue(), p.getName());
