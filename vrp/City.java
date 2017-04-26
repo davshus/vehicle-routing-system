@@ -77,14 +77,16 @@ public class City {
 		int street = startPoint.getStreet();
 		int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
 		if (avenue % 2 == 1){
-			if(addNextTo(map[street][avenue + 1]) != null || addNextTo(map[street][avenue - 1]) != null){
-				System.out.println("YOU FAILED");
+			if(addNextTo(map[street][avenue + 1]) != null){
+				System.out.println("test1");
+				return new Path(startPoint, map[street][avenue + 1], 1);
+			}else if (addNextTo(map[street][avenue - 1]) != null){
+				System.out.println("test2");
+				return new Path(startPoint, map[street][avenue - 1], 1);
 			}
 
 		}else{
-			if (addNextTo(startPoint) != null){
-				System.out.println("YOU FAILED");
-			}
+			addNextTo(startPoint);
 		}
 		
 
@@ -170,7 +172,7 @@ public class City {
 					return true;
 				}
 			}
-			System.out.println("Finished clearing");
+			// System.out.println("Finished clearing");
 			for (int i = 0; i < searched.length; i++){
 				for (int j = 0; j < searched[0].length; j++){
 					searched[i][j] = false;
