@@ -108,7 +108,9 @@ public class City {
 	}
 
 	public Pair addNextTo(Pair point){
-		nextFoundPoint(point);
+
+		///SUCH A FUCKING IDIOT - alden - to be fixed
+		// nextFoundPoint(point);
 		int x = point.getStreet();
 		int y = calcY(point.getAvenue(), point.getName());
 		if(y % 2 == 0){
@@ -146,6 +148,13 @@ public class City {
 						searchQueue.add(map[i[0]][i[1]]);
 					}
 				}
+			}
+		}else{
+			if(nextFoundPoint(point)){
+				System.out.println("FOUND FAILEEEDDFEEDFEF");
+				return point;
+				// System.out.println("Point found : " + i[0] + "\t" + i[1]);
+				// return map[i[0]][i[1]];
 			}
 		}
 		return null;
