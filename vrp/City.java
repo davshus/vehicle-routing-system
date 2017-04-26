@@ -150,6 +150,9 @@ public class City {
 
 	public boolean nextFoundPoint(Pair nextPair){
 
+		//I think the error has to do with this line being here but idk
+		//EIther way we should move it to the correct spot.
+
 		searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
 
 		if(nextPair.getDeliver() > 0){
