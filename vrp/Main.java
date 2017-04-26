@@ -48,6 +48,7 @@ public class Main {
 			}
 		}
 		totalDistance += currentPair.distanceTo(startPoint);
+		System.out.println(hv.totalPackages);
 		System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + totalDistance * 3));
 
 	}

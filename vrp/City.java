@@ -128,28 +128,34 @@ public class City {
 		while (true) {
 			if (ring.isEmpty()) return null;
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
+			System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
 				if (p.getDeliver() > 0) {
+					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
 					return start.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
 				if (upDown != null) {
-					System.out.println(p.getStreet() + " " + calcY(p));
-					System.out.println(upDown.getStreet() + " " + calcY(upDown));
+					// System.out.println(p.getStreet() + " " + calcY(p));
+					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
+					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();
 					map[upDown.getStreet()][calcY(upDown)].deliver();
 					return start.pathTo(map[upDown.getStreet()][calcY(upDown)]);
 				}
 				newRing.addAll(calcAround(p));
 			}
+			System.out.println(Arrays.toString(ring.toArray()));
 			ring = newRing;
+			System.out.println(Arrays.toString(ring.toArray()));
+			new Scanner(System.in).next();
 		}
 
 	}
 	public Pair checkUpDown(Pair center) {
 		//CENTER Y MUST BE EVEN
 		int y = calcY(center.getAvenue(), center.getName()), x = center.getStreet();
-		System.out.println(x + " " + y);
+		// System.out.println(x + " " + y);
 		if (!searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
 			searched[x][y + 1] = true;
 			return map[x][y + 1];
