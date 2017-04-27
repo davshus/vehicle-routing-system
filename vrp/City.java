@@ -135,7 +135,7 @@ public class City {
 				if (p.getDeliver() > 0) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
-					return start.pathTo(map[p.getStreet()][calcY(p)]);
+					return t.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
 				if (upDown != null) {
@@ -143,7 +143,7 @@ public class City {
 					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
 					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();
 					map[upDown.getStreet()][calcY(upDown)].deliver();
-					return start.pathTo(map[upDown.getStreet()][calcY(upDown)]);
+					return t.pathTo(map[upDown.getStreet()][calcY(upDown)]);
 				}
 				newRing.addAll(calcAround(p));
 				if (debug) System.out.println(calcY(p));

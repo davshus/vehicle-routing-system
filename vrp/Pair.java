@@ -18,16 +18,39 @@ public class Pair {
 		this.pairFrom = null;
 	}
 
-	public int distanceTo(Pair nextPair){
-		int xdist = Math.abs(nextPair.getStreet() - this.street) * 200;
-		int ydist = Math.abs(calcY(nextPair.getAvenue(), nextPair.getName()) - calcY(this.avenue, this.name));
-		if (ydist < 10){
-			int first = calcY(nextPair.getAvenue(), nextPair.getName()) % 10;
-			int second = this.avenue % 10;
-			ydist = ((first + second) < ((10 - first) + (10 - second))) ? (first + second) : ((10 - first) + (10 - second));
+	public int distanceTo(Pair endPair){
+		int distance = 0;
+		
+		int aveStart = calcY(this.getAvenue(), this.getName());
+		int aveEnd = calcY(endPair.getAvenue(), endPair.getName());
+
+		int streetDif = Math.abs(this.getStreet() - endPair.getStreet());
+		int aveDif = Math.abs(aveStart - aveEnd);
+		Integer totalDist = null;
+		if (aveDif < 10 && streetDif > 0){
+			// // System.out.println("LOL");
+			// int start = aveStart % 10 < aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
+			// int end = aveStart % 10 >= aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
+			// // System.out.println("start: " + start + " \t end : " + end);
+			// aveDif = end + start < (10 - end) + (10 - start) ? end + start : (10 - end) + (10 - start);
+			// if (aveStart / 10 == 49){
+			// 	aveDif = end + start;
+			// }
+			boolean thisTop = this.getName() - 'A' >= 5, thatTop = endPair.getName() - 'A' >= 5;
+			if (thisTop && thatTop) {
+				totalDist = (9 - (this.getName() - 'A')) + (9 - (endPair.getName() - 'A'));
+			} else { //Encompasses both (!thisTop && !thatTop) and else
+				System.out.println(this.getName() + " " + endPair.getName() + " " + endPair);
+				totalDist = (this.getName() - 'A') + (endPair.getName() - 'A');
+			}
+			totalDist *= 100;
+		} else {
+			// System.out.println("StreetDif: " + streetDif + " \t AveDif : " + aveDif);
+			totalDist = aveDif * 100;
 		}
-		ydist *= 100;
-		return ydist + xdist;
+		// System.out.println(totalDist/100 + " " + endPair + " " + streetDif);
+		totalDist += streetDif * 200;
+		return totalDist;
 	}
 	
 	public Path pathTo(Pair dest) {
