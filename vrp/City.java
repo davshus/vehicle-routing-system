@@ -38,6 +38,7 @@ public class City {
 			String aveStr = sc.next();
 			int avenue = Integer.parseInt(aveStr.substring(0, aveStr.length() - 1));
 			char letter = sc.next().charAt(0);
+			// if (map[street - 1][calcY(avenue - 1, letter)].getDeliver() > 0) System.out.println(map[street - 1][calcY(avenue - 1, letter)].getDeliver());
 			map[street - 1][calcY(avenue - 1, letter)].addDeliver();
 		}
 		// System.out.println(bart + " " + lisa);
@@ -111,7 +112,9 @@ public class City {
 		if (calcY(t) % 2 != 0) {
 			Pair l = checkUpDown(t);
 			if (l != null) {
-				return t.pathTo(l);
+				totalPackages += map[l.getStreet()][calcY(l)].getDeliver();
+				map[l.getStreet()][calcY(l)].deliver();
+				return t.pathTo(map[l.getStreet()][calcY(l)]);
 			}
 			start = map[t.getStreet()][calcY(t) + (calcY(t) != (nAvenues * 10) - 1 ? 1 : -1)];
 		} else {

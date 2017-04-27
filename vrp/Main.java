@@ -32,7 +32,6 @@ public class Main {
 
 		Pair startPoint = hv.getMap()[126][220];
 		Pair currentPair = startPoint;
-
 		while(currentPair != null){
 			Path nextPath = hv.nearestTo(currentPair);
 			if (nextPath != null) {
