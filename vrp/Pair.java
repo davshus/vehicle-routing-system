@@ -6,10 +6,6 @@ public class Pair {
 	private int deliver;
 	private Pair pairFrom;
 
-	public Pair() {
-		//Empty Pair
-	}
-
 	public Pair(int street, int avenue, char name) {
 		this.name = name;
 		this.street = street;
@@ -18,16 +14,27 @@ public class Pair {
 		this.pairFrom = null;
 	}
 
-	public int distanceTo(Pair nextPair){
-		int xdist = Math.abs(nextPair.getStreet() - this.street) * 200;
-		int ydist = Math.abs(calcY(nextPair.getAvenue(), nextPair.getName()) - calcY(this.avenue, this.name));
-		if (ydist < 10){
-			int first = calcY(nextPair.getAvenue(), nextPair.getName()) % 10;
-			int second = this.avenue % 10;
-			ydist = ((first + second) < ((10 - first) + (10 - second))) ? (first + second) : ((10 - first) + (10 - second));
-		}
-		ydist *= 100;
-		return ydist + xdist;
+	public int distanceTo(Pair endPair){
+		int distance = 0;
+		
+		int aveStart = calcY(this.getAvenue(), this.getName());
+		int aveEnd = calcY(endPair.getAvenue(), endPair.getName());
+
+		int streetDif = Math.abs(this.getStreet() - endPair.getStreet());
+		int aveDif = Math.abs(aveStart - aveEnd);
+
+		if (aveDif < 10 && streetDif > 0){
+			int start = aveStart % 10 < aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
+			int end = aveStart % 10 >= aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
+			// System.out.println("start: " + start + " \t end : " + end);
+			aveDif = end + start < (10 - end) + (10 - start) ? end + start : (10 - end) + (10 - start);
+			if (aveStart / 10 == 49){
+				aveDif = end + start;
+			}
+		} 
+		// System.out.println("StreetDif: " + streetDif + " \t AveDif : " + aveDif);
+		int totalDist = (streetDif * 200) + (aveDif * 100);
+		return totalDist;
 	}
 	
 	public void setPair(Pair newPair){ this.pairFrom = newPair; }
