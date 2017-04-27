@@ -39,9 +39,10 @@ public class Pair {
 			boolean thisTop = this.getName() - 'A' >= 5, thatTop = endPair.getName() - 'A' >= 5;
 			if (thisTop && thatTop) {
 				totalDist = (9 - (this.getName() - 'A')) + (9 - (endPair.getName() - 'A'));
-			} else { //Encompasses both (!thisTop && !thatTop) and else
-				System.out.println(this.getName() + " " + endPair.getName() + " " + endPair);
-				totalDist = (this.getName() - 'A') + (endPair.getName() - 'A');
+			} else if (!thisTop && !thatTop) {
+			   totalDist = (this.getName() - 'A') + (endPair.getName() - 'A');
+			} else {
+			   totalDist = Math.min((this.getName() - 'A') + (9 - (endPair.getName() - 'A')), (9 - (this.getName() - 'A')) + (endPair.getName() - 'A'));
 			}
 			totalDist *= 100;
 		} else {

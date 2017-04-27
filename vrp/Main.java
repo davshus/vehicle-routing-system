@@ -35,12 +35,14 @@ public class Main {
 
 		while(currentPair != null){
 			Path nextPath = hv.nearestTo(currentPair);
-			if (nextPath != null){
+			if (nextPath != null) {
+				route.add(nextPath);
 				totalDistance += nextPath.getDistance();
 				currentPair = nextPath.getEnd();
 				totalPackages = hv.totalPackages;
 				write(currentPair.getStreet() + " " + currentPair.getAvenue() + " " + currentPair.getName() + " " + nextPath.getDistance());
 			}else{
+				route.add(currentPair.pathTo(startPoint));
 				System.out.println(currentPair.getName() + "   " + nextPath);
 				System.out.println("End");
 				writer.close();
@@ -48,7 +50,8 @@ public class Main {
 			}
 		}
 		totalDistance += currentPair.distanceTo(startPoint);
-		System.out.println(hv.totalPackages);
+		System.out.println("hv.totalPackages = " + hv.totalPackages);
+		System.out.println("route.size() = " + route.size());
 		System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + (totalDistance/100) * 3));
 
 	}

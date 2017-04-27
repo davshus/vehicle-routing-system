@@ -126,11 +126,11 @@ public class City {
 		searched[start.getStreet()][calcY(start)] = true;
 		ArrayList<Pair> ring = new ArrayList<Pair>();
 		ring.add(start);
-		boolean debug = false;//totalPackages > 776;
+		// boolean debug = false;//totalPackages > 776;
 		while (true) {
 			if (ring.isEmpty()) return null;
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
-			if (debug) System.out.println(Arrays.toString(ring.toArray()));
+			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
 				if (p.getDeliver() > 0) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
@@ -146,12 +146,12 @@ public class City {
 					return t.pathTo(map[upDown.getStreet()][calcY(upDown)]);
 				}
 				newRing.addAll(calcAround(p));
-				if (debug) System.out.println(calcY(p));
+				// if (debug) System.out.println(calcY(p));
 			}
-			if (debug) System.out.println(Arrays.toString(ring.toArray()));
+			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			ring = newRing;
-			if (debug) System.out.println(Arrays.toString(ring.toArray()));
-			if (debug) new Scanner(System.in).next();
+			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
+			// if (debug) new Scanner(System.in).next();
 		}
 
 	}
