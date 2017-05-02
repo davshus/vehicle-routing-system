@@ -73,40 +73,6 @@ public class City {
 	boolean[][] searched;
 	Point[] kMeanPoints;
 
-
-	// public Path nearestTo(Pair startPoint){
-	// 	int street = startPoint.getStreet();
-	// 	int avenue = calcY(startPoint.getAvenue(), startPoint.getName());
-	// 	if (avenue % 2 == 1){
-	// 		if(addNextTo(map[street][avenue + 1]) != null){
-	// 			System.out.println("test1");
-	// 			return new Path(startPoint, map[street][avenue + 1], 1);
-	// 		}else if (addNextTo(map[street][avenue - 1]) != null){
-	// 			System.out.println("test2");
-	// 			return new Path(startPoint, map[street][avenue - 1], 1);
-	// 		}
-
-	// 	}else{
-	// 		addNextTo(startPoint);
-	// 	}
-		
-
-	// 	searched[street][avenue] = true;
-
-	// 	Pair currSearch = new Pair();
-
-	// 	while(searchQueue.peek() != null){
-	// 		currSearch = (Pair) searchQueue.poll();
-	// 		searched[currSearch.getStreet()][calcY(currSearch.getAvenue(), currSearch.getName())] = true;
-	// 		Pair finalPair = addNextTo(currSearch);
-	// 		if (finalPair != null){
-	// 			// System.out.println("A Pair was found");
-	// 			int dist = findDistance(finalPair);
-	// 			return new Path(startPoint, finalPair, dist);
-	// 		}
-	// 	}
-	// 	return null;
-	// }
 	public Path nearestTo(Pair t) {
 		Pair start = null;
 		if (calcY(t) % 2 != 0) {
@@ -208,90 +174,6 @@ public class City {
 		}
 		return ans;
 	}
-	// public Pair addNextTo(Pair point){
-
-	// 	///SUCH A FUCKING IDIOT - alden - to be fixed
-	// 	// nextFoundPoint(point);
-	// 	int x = point.getStreet();
-	// 	int y = calcY(point.getAvenue(), point.getName());
-	// 	if(y % 2 == 0){
-	// 		ArrayList<int[]> points = new ArrayList<int[]>();
-	// 		if (y != 498){ 
-	// 			points.add(new int[]{x, y + 1}); 
-	// 			points.add(new int[]{x, y + 2});
-	// 		}
-	// 		if (y != 0){
-	// 			points.add(new int[] {x, y - 1});
-	// 			points.add(new int[] {x, y - 2});
-	// 		}
-
-	// 		if (y % 10 == 0){
-	// 			if (x != 0){
-	// 				points.add(new int[] {x - 1, x});
-	// 			}
-	// 			if (x != 250){
-	// 				points.add(new int[] {x + 1, y});
-	// 			}
-	// 		}
-	// 		// System.out.println("X: " + x);
-	// 		// System.out.println("Y: " + y);
-
-	// 		for (int[] i : points){
-	// 			// System.out.println("X: " + i[0]);
-	// 			// System.out.println("Y: " + i[1]);
-
-	// 			if (!searched[i[0]][i[1]]){
-	// 				map[i[0]][i[1]].setPair(point);
-	// 				if(nextFoundPoint(map[i[0]][i[1]])){
-	// 					System.out.println("Point found : " + i[0] + "\t" + i[1]);
-	// 					return map[i[0]][i[1]];
-	// 				}else{
-	// 					searchQueue.add(map[i[0]][i[1]]);
-	// 				}
-	// 			}
-	// 		}
-	// 	}else{
-	// 		if(nextFoundPoint(point)){
-	// 			System.out.println("FOUND FAILEEEDDFEEDFEF");
-	// 			return point;
-	// 			// System.out.println("Point found : " + i[0] + "\t" + i[1]);
-	// 			// return map[i[0]][i[1]];
-	// 		}
-	// 	}
-	// 	return null;
-
-	// }
-
-	// public boolean nextFoundPoint(Pair nextPair){
-
-	// 	//I think the error has to do with this line being here but idk
-	// 	//EIther way we should move it to the correct spot.
-
-	// 	searched[nextPair.getStreet()][calcY(nextPair.getAvenue(), nextPair.getName())] = true;
-
-	// 	if(nextPair.getDeliver() > 0){
-	// 		totalPackages += nextPair.getDeliver();
-	// 		nextPair.setDeliver(0);
-
-	// 		// System.out.println(nextPair.getStreet() + "\t" + nextPair.getAvenue());
-	// 		while(searchQueue.peek() != null){
-	// 			try{
-	// 				searchQueue.remove();	
-	// 			}catch(Exception e){
-	// 				System.out.println("Removal failed");
-	// 				return true;
-	// 			}
-	// 		}
-	// 		// System.out.println("Finished clearing");
-	// 		for (int i = 0; i < searched.length; i++){
-	// 			for (int j = 0; j < searched[0].length; j++){
-	// 				searched[i][j] = false;
-	// 			}
-	// 		}
-	// 		return true;
-	// 	}
-	// 	return false;
-	// }
 	public void kMean(int trucks) {
 		kMeanPoints = new Point[trucks];
 		double deg = ((double)360)/trucks;
