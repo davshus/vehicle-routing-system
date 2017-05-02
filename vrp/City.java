@@ -295,12 +295,12 @@ public class City {
 	public void kMean(int trucks) {
 		kMeanPoints = new Point[trucks];
 		double deg = ((double)360)/trucks;
+		int xSize = map.length * 2, ySize = map[0].length;
+		//x is stretched by 2 to make the map a square
+		double radius = Math.sqrt(Math.pow(xSize / 2, 2) + Math.pow(ySize / 2, 2));
 		while (true) {
-			/* There is a problem.
-			 * The map is not square
-			 * Solution: dilate x?
-			 */
 		}
+		
 	}
 	public int calcY(int ave, char name) {
 		// System.out.println(ave);

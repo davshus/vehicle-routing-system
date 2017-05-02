@@ -24,7 +24,6 @@ public class Main {
 			return;
 		}
 		Pair[][] map = hv.getMap();
-
 		ArrayList<Path> route = new ArrayList<Path>();
 
 		long totalDistance = 0;
