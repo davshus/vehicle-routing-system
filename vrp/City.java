@@ -3,7 +3,7 @@ import java.io.File;
 import java.util.*;
 import vrp.Pair;
 import vrp.Avenue;
-//import tinshoes.geom.Point;
+import tinshoes.geom.Point;
 public class City {
 
 	public int totalPackages;
@@ -71,7 +71,7 @@ public class City {
 
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched;
-
+	Point[] kMeanPoints;
 
 
 	// public Path nearestTo(Pair startPoint){
@@ -292,7 +292,16 @@ public class City {
 	// 	}
 	// 	return false;
 	// }
-
+	public void kMean(int trucks) {
+		kMeanPoints = new Point[trucks];
+		double deg = ((double)360)/trucks;
+		while (true) {
+			/* There is a problem.
+			 * The map is not square
+			 * Solution: dilate x?
+			 */
+		}
+	}
 	public int calcY(int ave, char name) {
 		// System.out.println(ave);
 		return (ave * 10) + (name - 'A');
