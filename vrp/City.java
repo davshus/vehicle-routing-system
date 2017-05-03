@@ -177,12 +177,17 @@ public class City {
 
 	public int[][] kMeansStartPoints(int trucks){
 
-		Point[] kMeanPoints = new Point[trucks];
-		double deg = ((double)360)/trucks;
+		int[][] res = new int[trucks][2];
+		double baseDeg = ((double)360)/trucks;
 		int xSize = map.length * 2, ySize = map[0].length;
 		//x is stretched by 2 to make the map a square
 		double radius = Math.sqrt(Math.pow(xSize / 2, 2) + Math.pow(ySize / 2, 2));
-
+		for (int i = 0; i < trucks; i++) {
+			double currDeg = i * baseDeg;
+			double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
+			res[i][0] = (int)x, res[i][1] = (int)y;
+		}
+		return res;
 	}
 
 	public void kMean(int trucks) {
