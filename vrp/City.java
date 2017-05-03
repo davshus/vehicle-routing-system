@@ -71,7 +71,6 @@ public class City {
 
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched;
-	Point[] kMeanPoints;
 
 	public Path nearestTo(Pair t) {
 		Pair start = null;
@@ -174,13 +173,24 @@ public class City {
 		}
 		return ans;
 	}
-	public void kMean(int trucks) {
-		kMeanPoints = new Point[trucks];
+
+
+	public int[][] kMeansStartPoints(int trucks){
+
+		Point[] kMeanPoints = new Point[trucks];
 		double deg = ((double)360)/trucks;
 		int xSize = map.length * 2, ySize = map[0].length;
 		//x is stretched by 2 to make the map a square
 		double radius = Math.sqrt(Math.pow(xSize / 2, 2) + Math.pow(ySize / 2, 2));
+
+	}
+
+	public void kMean(int trucks) {
+		int[][] kMeansPoints = kMeansStartPoints(trucks);
+		
 		while (true) {
+
+
 		}
 		
 	}

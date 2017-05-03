@@ -5,6 +5,7 @@ public class Pair {
 	private int avenue;
 	private int deliver;
 	private Pair pairFrom;
+	private int cluster;
 
 	public Pair() {
 		//Empty Pair
@@ -16,6 +17,7 @@ public class Pair {
 		this.avenue = avenue - 1;
 		this.deliver = 0;
 		this.pairFrom = null;
+		this.cluster = 0;
 	}
 
 	public int distanceTo(Pair endPair){
@@ -28,14 +30,6 @@ public class Pair {
 		int aveDif = Math.abs(aveStart - aveEnd);
 		Integer totalDist = null;
 		if (aveDif < 10 && streetDif > 0){
-			// // System.out.println("LOL");
-			// int start = aveStart % 10 < aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
-			// int end = aveStart % 10 >= aveEnd % 10 ? aveStart % 10 : aveEnd % 10;
-			// // System.out.println("start: " + start + " \t end : " + end);
-			// aveDif = end + start < (10 - end) + (10 - start) ? end + start : (10 - end) + (10 - start);
-			// if (aveStart / 10 == 49){
-			// 	aveDif = end + start;
-			// }
 			boolean thisTop = this.getName() - 'A' >= 5, thatTop = endPair.getName() - 'A' >= 5;
 			if (thisTop && thatTop) {
 				totalDist = (9 - (this.getName() - 'A')) + (9 - (endPair.getName() - 'A'));
@@ -61,6 +55,10 @@ public class Pair {
 	public void deliver() {
 		setDeliver(0);
 	}
+
+	public void setCluster(int cluster){this.cluster = cluster;}
+
+	public int getCluster(){return cluster;}
 
 	public void setPair(Pair newPair){ this.pairFrom = newPair; }
 
