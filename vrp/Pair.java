@@ -58,7 +58,7 @@ public class Pair {
 
 	public void setCluster(int cluster){this.cluster = cluster;}
 
-	public int getCluster(){return cluster;}
+	public int getCluster(){return this.cluster;}
 
 	public void setPair(Pair newPair){ this.pairFrom = newPair; }
 
