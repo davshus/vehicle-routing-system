@@ -186,10 +186,28 @@ public class City {
 	}
 
 	public void kMean(int trucks) {
+		if(trucks == 1){
+			for (Pair[] i : map){
+				for (Pair j : i){
+					j.setCluster(0);
+				}	
+			}
+			return;
+		}
+
+
 		int[][] kMeansPoints = kMeansStartPoints(trucks);
 		
 		while (true) {
+			for (Pair[] i : map){
+				for (Pair j : i){
+					if(j.getDelier() > 0){
+						
 
+						
+					}
+				}	
+			}
 
 		}
 		
