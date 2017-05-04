@@ -24,33 +24,45 @@ public class Main {
 			return;
 		}
 		Pair[][] map = hv.getMap();
-		ArrayList<Path> route = new ArrayList<Path>();
 
-		long totalDistance = 0;
-		int totalPackages = 0;
+		hv.kMeans(4);
 
-		Pair startPoint = hv.getMap()[126][220];
-		Pair currentPair = startPoint;
-		while(currentPair != null){
-			Path nextPath = hv.nearestTo(currentPair);
-			if (nextPath != null) {
-				route.add(nextPath);
-				totalDistance += nextPath.getDistance();
-				currentPair = nextPath.getEnd();
-				totalPackages = hv.totalPackages;
-				write(currentPair.getStreet() + " " + currentPair.getAvenue() + " " + currentPair.getName() + " " + nextPath.getDistance());
-			}else{
-				route.add(currentPair.pathTo(startPoint));
-				System.out.println(currentPair.getName() + "   " + nextPath);
-				System.out.println("End");
-				writer.close();
-				break;
+		for (int i = 249; i >= 0; i--){
+			for (int j = 499; j >= 0; j--){
+				System.out.print(hv.getMap()[i][j].getCluster() + " ");
 			}
+			System.out.print("\n");
 		}
-		totalDistance += currentPair.distanceTo(startPoint);
-		System.out.println("hv.totalPackages = " + hv.totalPackages);
-		System.out.println("route.size() = " + route.size());
-		System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + (totalDistance/100) * 3));
+
+
+
+		// ArrayList<Path> route = new ArrayList<Path>();
+
+		// long totalDistance = 0;
+		// int totalPackages = 0;
+
+		// Pair startPoint = hv.getMap()[126][220];
+		// Pair currentPair = startPoint;
+		// while(currentPair != null){
+		// 	Path nextPath = hv.nearestTo(currentPair);
+		// 	if (nextPath != null) {
+		// 		route.add(nextPath);
+		// 		totalDistance += nextPath.getDistance();
+		// 		currentPair = nextPath.getEnd();
+		// 		totalPackages = hv.totalPackages;
+		// 		write(currentPair.getStreet() + " " + currentPair.getAvenue() + " " + currentPair.getName() + " " + nextPath.getDistance());
+		// 	}else{
+		// 		route.add(currentPair.pathTo(startPoint));
+		// 		System.out.println(currentPair.getName() + "   " + nextPath);
+		// 		System.out.println("End");
+		// 		writer.close();
+		// 		break;
+		// 	}
+		// }
+		// totalDistance += currentPair.distanceTo(startPoint);
+		// System.out.println("hv.totalPackages = " + hv.totalPackages);
+		// System.out.println("route.size() = " + route.size());
+		// System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + (totalDistance/100) * 3));
 
 	}
 
