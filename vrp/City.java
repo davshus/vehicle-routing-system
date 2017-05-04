@@ -71,32 +71,12 @@ public class City {
 
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched;
-	//TO TEST
-	public ArrayList<Path> greedyRoute(Pair currentPair, int cluster) {
-		ArrayList<Path> route = ArrayList<Path>();
-		Pair currentPair = startPoint;
-		while(currentPair != null){
-			Path nextPath = nearestTo(currentPair);
-			if (nextPath != null) {
-				route.add(nextPath);
-				currentPair = nextPath.getEnd();
-				// write(currentPair.getStreet() + " " + currentPair.getAvenue() + " " + currentPair.getName() + " " + nextPath.getDistance());
-			}else{
-				route.add(currentPair.pathTo(startPoint));
-				// System.out.println(currentPair.getName() + "   " + nextPath);
-				// System.out.println("End");
-				// writer.close();
-				break;
-			}
-		}
-		return route;
-	}
-	//TO TEST
-	public Path nearestTo(Pair t, int cluster) {
+
+	public Path nearestTo(Pair t) {
 		Pair start = null;
 		if (calcY(t) % 2 != 0) {
 			Pair l = checkUpDown(t);
-			if (l != null && l.getCluster() == cluster) {
+			if (l != null) {
 				totalPackages += map[l.getStreet()][calcY(l)].getDeliver();
 				map[l.getStreet()][calcY(l)].deliver();
 				return t.pathTo(map[l.getStreet()][calcY(l)]);
@@ -120,13 +100,13 @@ public class City {
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
 			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
-				if (p.getDeliver() > 0 && p.getCluster() == cluster) {
+				if (p.getDeliver() > 0) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
 					return t.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
-				if (upDown != null && p.getCluster() == cluster) {
+				if (upDown != null) {
 					// System.out.println(p.getStreet() + " " + calcY(p));
 					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
 					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();
@@ -205,7 +185,7 @@ public class City {
 		for (int i = 0; i < trucks; i++) {
 			double currDeg = i * baseDeg;
 			double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
-			res[i][0] = (int)x, res[i][1] = (int)y;
+			res[i][0] = (int)x; res[i][1] = (int)y;
 		}
 		return res;
 	}
@@ -222,30 +202,49 @@ public class City {
 
 
 		int[][] kMeansPoints = kMeansStartPoints(trucks);
-		
-		int[][] averages =  new int[kMeansPoints.length][2];
 
 		while (true) {
+
+			int[][] averages = new int[trucks][2];
+			int[] aveNums = new int[trucks];
+
 			for (Pair[] i : map){
 				for (Pair j : i){
-					if(j.getDelier() > 0){
+					if(j.getDeliver() > 0){
 						
 						int index = 0;
 						int greatest = 0;
 
-						for(int ind = 0; ind < kMeansPoints.length; ind++){
-							if(j.distanceTo(map[ind[0]][ind[1]]) > greatest){
-								greatest = j.distanceTo(map[ind[0]][ind[1]]);
+						for(int ind = 0; ind < trucks; ind++){
+							if(j.distanceTo(map[kMeansPoints[ind][0]][kMeansPoints[ind][1]]) > greatest){
+								greatest = j.distanceTo(map[kMeansPoints[ind][0]][kMeansPoints[ind][1]]);
 								index = ind;
 							}
 						}
 
+						j.setCluster(index);
 
+						averages[index][0] += j.getStreet();
+						averages[index][1] += j.getCalcAvenue();
+						aveNums[index] += 1;
 						
 					}
 				}	
 			}
 
+			boolean works = true;
+
+			for (int i = 0; i < trucks; i ++){
+				
+				averages[i][0] /= aveNums[i];
+				averages[i][1] /= aveNums[i]; 
+				if (averages[i][0] != kMeansPoints[i][0] || averages[i][1] != kMeansPoints[i][0]){
+					works = false;
+					kMeansPoints[i][0] = averages[i][0];
+					kMeansPoints[i][1] = averages[i][1];
+				}
+			}
+			if (works) {return;}
 		}
 		
 	}

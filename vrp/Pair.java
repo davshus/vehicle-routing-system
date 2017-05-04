@@ -76,6 +76,8 @@ public class Pair {
 
 	public int getAvenue() { return this.avenue; }
 
+	public int getCalcAvenue(){return (this.avenue * 10) + (this.name - 'A');}
+
 	public void setDeliver(int deliver) { this.deliver = deliver; }
 
 	public int getDeliver() { return this.deliver; }
