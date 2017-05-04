@@ -190,39 +190,52 @@ public class City {
 		return res;
 	}
 
-	public void kMean(int trucks) {
+	public void kMeans(int trucks) {
+// System.out.println("wtf");
+
 		if(trucks == 1){
+			// System.out.println("break");
 			for (Pair[] i : map){
 				for (Pair j : i){
-					j.setCluster(0);
+					j.setCluster(1);
 				}	
 			}
 			return;
 		}
 
+		// System.out.println("break 1");
 
 		int[][] kMeansPoints = kMeansStartPoints(trucks);
+
+		// System.out.println("break 2");
+
+
+		for (int i = 0; i < trucks; i++){
+			System.out.println(kMeansPoints[i][0] + "\t" + kMeansPoints[i][1] + " ");
+		}
 
 		while (true) {
 
 			int[][] averages = new int[trucks][2];
 			int[] aveNums = new int[trucks];
 
+			// System.out.println("break 3");
+
 			for (Pair[] i : map){
 				for (Pair j : i){
 					if(j.getDeliver() > 0){
 						
 						int index = 0;
-						int greatest = 0;
+						int greatest = Integer.MAX_VALUE;
 
 						for(int ind = 0; ind < trucks; ind++){
-							if(j.distanceTo(map[kMeansPoints[ind][0]][kMeansPoints[ind][1]]) > greatest){
+							if(j.distanceTo(map[kMeansPoints[ind][0]][kMeansPoints[ind][1]]) < greatest){
 								greatest = j.distanceTo(map[kMeansPoints[ind][0]][kMeansPoints[ind][1]]);
 								index = ind;
 							}
 						}
 
-						j.setCluster(index);
+						j.setCluster(index + 1);
 
 						averages[index][0] += j.getStreet();
 						averages[index][1] += j.getCalcAvenue();
@@ -231,7 +244,7 @@ public class City {
 					}
 				}	
 			}
-
+			// System.out.println("break 4");
 			boolean works = true;
 
 			for (int i = 0; i < trucks; i ++){
@@ -244,6 +257,12 @@ public class City {
 					kMeansPoints[i][1] = averages[i][1];
 				}
 			}
+			System.out.println("\n");
+
+			for(int i = 0; i < trucks; i++){
+				System.out.print(kMeansPoints[i][0] + "\t" + kMeansPoints[i][1] + " ");
+			}
+
 			if (works) {return;}
 		}
 		
