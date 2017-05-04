@@ -185,7 +185,9 @@ public class City {
 		for (int i = 0; i < trucks; i++) {
 			double currDeg = i * baseDeg;
 			double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
-			res[i][0] = (int)(x/2); res[i][1] = (int)y;
+			x /= 2;
+			x += map.length / 2; y += map[0].length / 2;
+			res[i][0] = (int)x; res[i][1] = (int)y;
 		}
 		return res;
 	}
