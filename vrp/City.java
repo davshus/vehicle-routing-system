@@ -72,11 +72,30 @@ public class City {
 	Queue<Pair> searchQueue = new LinkedList<Pair>();
 	boolean[][] searched;
 
-	public Path nearestTo(Pair t) {
+
+
+	//TO TEST
+ 	public ArrayList<Path> greedyRoute(Pair startPoint, int cluster) {
+ 		ArrayList<Path> route = ArrayList<Path>();
+ 		Pair currentPair = startPoint;
+ 		while(currentPair != null){
+ 			Path nextPath = nearestTo(currentPair, cluster);
+ 			if (nextPath != null) {
+ 				route.add(nextPath);
+ 				currentPair = nextPath.getEnd();
+			}else{
+				route.add(currentPair.pathTo(startPoint));
+ 				break;
+ 			}
+ 		}
+ 		return route;
+ 	}
+ 	//TO TEST
+ 	public Path nearestTo(Pair t, int cluster) {
 		Pair start = null;
 		if (calcY(t) % 2 != 0) {
 			Pair l = checkUpDown(t);
-			if (l != null) {
+			if (l != null && l.getCluster() == cluster) {
 				totalPackages += map[l.getStreet()][calcY(l)].getDeliver();
 				map[l.getStreet()][calcY(l)].deliver();
 				return t.pathTo(map[l.getStreet()][calcY(l)]);
@@ -100,13 +119,13 @@ public class City {
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
 			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
-				if (p.getDeliver() > 0) {
+				if (p.getDeliver() > 0 && p.getCluster() == cluster) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
 					return t.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
-				if (upDown != null) {
+				if (upDown != null && p.getCluster() == cluste) {
 					// System.out.println(p.getStreet() + " " + calcY(p));
 					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
 					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();

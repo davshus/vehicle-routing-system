@@ -44,6 +44,15 @@ public class Main {
 		}
 
 
+		int numOfTrucks = 1;
+
+
+		while(true){
+			
+			
+			numOfTrucks ++;
+		}
+
 
 		// ArrayList<Path> route = new ArrayList<Path>();
 
