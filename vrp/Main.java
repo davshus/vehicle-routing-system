@@ -25,13 +25,17 @@ public class Main {
 		}
 		Pair[][] map = hv.getMap();
 
-		hv.kMeans(4);
+		hv.kMeans(30);
 
 		for (int i = 249; i >= 0; i--){
 			for (int j = 499; j >= 0; j--){
-				System.out.print(hv.getMap()[i][j].getCluster() + " ");
+				if(hv.getMap()[i][j].getCluster() != 0){
+					System.out.print(Integer.toString(hv.getMap()[i][j].getCluster()) + " ");
+					write(Integer.toString(hv.getMap()[i][j].getCluster()));
+				}
 			}
 			System.out.print("\n");
+			write("\n");
 		}
 
 
@@ -67,7 +71,7 @@ public class Main {
 	}
 
 	public static void write(String output){
-		writer.println(output);
+		writer.print(output);
 	}
 
 

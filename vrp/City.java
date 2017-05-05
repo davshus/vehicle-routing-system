@@ -253,7 +253,7 @@ public class City {
 				
 				averages[i][0] /= aveNums[i];
 				averages[i][1] /= aveNums[i]; 
-				if (averages[i][0] != kMeansPoints[i][0] || averages[i][1] != kMeansPoints[i][0]){
+				if (averages[i][0] != kMeansPoints[i][0] || averages[i][1] != kMeansPoints[i][1]){
 					works = false;
 					kMeansPoints[i][0] = averages[i][0];
 					kMeansPoints[i][1] = averages[i][1];
@@ -262,7 +262,7 @@ public class City {
 			System.out.println("\n");
 
 			for(int i = 0; i < trucks; i++){
-				System.out.print(kMeansPoints[i][0] + "\t" + kMeansPoints[i][1] + " ");
+				System.out.print(kMeansPoints[i][0] + " " + kMeansPoints[i][1] + "\t\t\t");
 			}
 
 			if (works) {return;}
