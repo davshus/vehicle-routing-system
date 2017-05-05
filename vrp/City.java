@@ -175,6 +175,12 @@ public class City {
 	}
 
 
+	int[][] k;
+
+	public int[][] getKMeans(){
+		return k;
+	}
+
 	public int[][] kMeansStartPoints(int trucks){
 
 		int[][] res = new int[trucks][2];
@@ -210,11 +216,6 @@ public class City {
 		int[][] kMeansPoints = kMeansStartPoints(trucks);
 
 		// System.out.println("break 2");
-
-
-		for (int i = 0; i < trucks; i++){
-			System.out.println(kMeansPoints[i][0] + "\t" + kMeansPoints[i][1] + " ");
-		}
 
 		while (true) {
 
@@ -262,10 +263,12 @@ public class City {
 			System.out.println("\n");
 
 			for(int i = 0; i < trucks; i++){
-				System.out.print(kMeansPoints[i][0] + " " + kMeansPoints[i][1] + "\t\t\t");
 			}
 
-			if (works) {return;}
+			if (works) {
+				k = kMeansPoints;
+				return;
+			}
 		}
 		
 	}

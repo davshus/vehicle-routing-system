@@ -25,19 +25,21 @@ public class Main {
 		}
 		Pair[][] map = hv.getMap();
 
-		hv.kMeans(3);
+		hv.kMeans(4);
+
+		int[][] kMeanPoints = hv.getKMeans();
 
 		for (int i = 249; i >= 0; i--){
 			for (int j = 499; j >= 0; j--){
-				System.out.print((Integer.toString(hv.getMap()[i][j].getCluster()) == "0") ? " " : Integer.toString(hv.getMap()[i][j].getCluster()));
-				if(hv.getMap()[i][j].getCluster() != 0){
-					// System.out.print(Integer.toString(hv.getMap()[i][j].getCluster()) + " ");
-					// write(Integer.toString(hv.getMap()[i][j].getCluster()));
+
+				for (int[] k : kMeanPoints){
+					if (k[0] == i && k[1] == j){
+						write("*");
+					}
 				}
 
 				write((hv.getMap()[i][j].getCluster() == 0) ? " " : Integer.toString(hv.getMap()[i][j].getCluster()));
 			}
-			System.out.print("\n");
 			write("\n");
 		}
 
