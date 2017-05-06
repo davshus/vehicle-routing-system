@@ -47,7 +47,7 @@ public class Main {
 
 
 		int nTrucks = 0;
-		double time;
+		double gTime = -1;
 		int totalDistance;
 		do {
 			hv.resetDeliveries();
@@ -57,15 +57,22 @@ public class Main {
 			hv.kMeans(startPoint, nTrucks);
 			ArrayList<ArrayList<Path>> routes = new ArrayList<ArrayList<Path>>(); //Not using arrays because generic arrays are not supported...
 			for (int i = 0; i < nTrucks; i++) {
+				int distance = 0;
+				int packages = 0;
 				routes.add(hv.greedyRoute(startPoint, i));
 				for (Path p : routes.get(i)) {
 					totalDistance += p.getDistance();
+					distance += p.getDistance();
+					packages += p.getEnd().getDeliver();
 				}
+				double time = (packages * 60) + ((distance/100) * 3);
+				if (gTime == -1 || time > gTime) {
+					gTime = time;
+				}
+				System.out.println(time + "s = " + time/3600 + "h");
 			}
-			time = (hv.totalPackages * 60) + ((totalDistance/100) * 3);
-			System.out.println(time + "s = " + time/3600 + "h");
-		} while (time/3600 > 24); // seconds / 3600 = hours
-		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + time + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
+		} while (gTime/3600 > 24); // seconds / 3600 = hours
+		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
 
 
 		// ArrayList<Path> route = new ArrayList<Path>();

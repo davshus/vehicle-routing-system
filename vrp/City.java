@@ -303,7 +303,9 @@ public class City {
 			boolean works = true;
 
 			for (int i = 0; i < trucks; i ++){
-				
+				if (aveNums[i] == 0) {
+					continue;
+				}
 				averages[i][0] /= aveNums[i];
 				averages[i][1] /= aveNums[i]; 
 				if (averages[i][0] != kMeansPoints[i][0] || averages[i][1] != kMeansPoints[i][1]){
