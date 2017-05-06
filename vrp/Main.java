@@ -25,7 +25,9 @@ public class Main {
 		}
 		Pair[][] map = hv.getMap();
 
-		hv.kMeans(4);
+		Pair startPoint = hv.getMap()[126][220];
+
+		hv.kMeans(startPoint, 4);
 
 		int[][] kMeanPoints = hv.getKMeans();
 
@@ -44,14 +46,14 @@ public class Main {
 		}
 
 
-		int numOfTrucks = 1;
+		// int numOfTrucks = 1;
 
 
-		while(true){
+		// while(true){
 			
 			
-			numOfTrucks ++;
-		}
+		// 	numOfTrucks ++;
+		// }
 
 
 		// ArrayList<Path> route = new ArrayList<Path>();

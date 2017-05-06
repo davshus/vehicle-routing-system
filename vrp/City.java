@@ -76,7 +76,7 @@ public class City {
 
 	//TO TEST
  	public ArrayList<Path> greedyRoute(Pair startPoint, int cluster) {
- 		ArrayList<Path> route = ArrayList<Path>();
+ 		ArrayList<Path> route = new ArrayList<Path>();
  		Pair currentPair = startPoint;
  		while(currentPair != null){
  			Path nextPath = nearestTo(currentPair, cluster);
@@ -125,7 +125,7 @@ public class City {
 					return t.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
-				if (upDown != null && p.getCluster() == cluste) {
+				if (upDown != null && p.getCluster() == cluster) {
 					// System.out.println(p.getStreet() + " " + calcY(p));
 					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
 					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();
@@ -205,20 +205,35 @@ public class City {
 		int[][] res = new int[trucks][2];
 		double baseDeg = ((double)360)/trucks;
 		
-		// int xSize = map.length * 2, ySize = map[0].length;
-		// //x is stretched by 2 to make the map a square
+		int w = map.length, h = map[0].length;
+		//x is stretched by 2 to make the map a square
 		// double radius = Math.sqrt(Math.pow(xSize / 2, 2) + Math.pow(ySize / 2, 2));
-		// for (int i = 0; i < trucks; i++) {
-		// 	double currDeg = i * baseDeg;
-		// 	double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
-		// 	x /= 2;
-		// 	x += map.length / 2; y += map[0].length / 2;
-		// 	res[i][0] = (int)x; res[i][1] = (int)y;
-		// }
+		for (int i = 0; i < trucks; i++) {
+			double currDeg = i * baseDeg;
+			int x = 0, y = 0;
+			if (currDeg <= 180) {
+				y = calcY(startPoint);
+				x = currDeg <= 90 ? w - startPoint.getAvenue() : startPoint.getAvenue(); 
+			} else {
+				y = h - calcY(startPoint);
+				x = currDeg >= 270 ? w - startPoint.getAvenue() : startPoint.getAvenue();
+			}
+			double currRadius = Math.min(Math.abs(x/Math.cos(Math.toRadians(currDeg))), Math.abs(y/Math.sin(Math.toRadians(currDeg))));
+			System.out.println(currRadius);
+			double currPointDist = Math.abs(currRadius/2);
+			double currX = currPointDist * Math.cos(Math.toRadians(currDeg)), currY = currPointDist * Math.sin(Math.toRadians(currDeg));
+			currX += startPoint.getAvenue();
+			currY += calcY(startPoint);
+			// double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
+			// x /= 2;
+			// x += map.length / 2; y += map[0].length / 2;
+			System.out.println(currX + "," + currY + " - " + currDeg);
+			res[i][0] = (int)currX; res[i][1] = (int)currY;
+		}
 		return res;
 	}
 
-	public void kMeans(int trucks) {
+	public void kMeans(Pair startPoint, int trucks) {
 // System.out.println("wtf");
 
 		if(trucks == 1){
@@ -233,7 +248,7 @@ public class City {
 
 		// System.out.println("break 1");
 
-		int[][] kMeansPoints = kMeansStartPoints(trucks);
+		int[][] kMeansPoints = kMeansStartPoints(startPoint, trucks);
 
 		// System.out.println("break 2");
 
