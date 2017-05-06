@@ -54,7 +54,20 @@ public class Main {
 			nTrucks++;
 			totalDistance = 0;
 			System.out.println(nTrucks);
-			hv.kMeans(startPoint, nTrucks);
+			int[][] kMeanPoints = hv.kMeans(startPoint, nTrucks);
+			clear();
+			for(int i = 249; i >= 0; i--){
+				for (int j = 449; j >= 0; j--){
+					for (int[] k : kMeanPoints){
+						if (k[0] == i && k[1] == j){
+							write("*");
+						}
+					}
+					write((hv.getMap()[i][j].getCluster() == -1) ? " " : (hv.getMap()[i][j].getCluster() < 10 ? Integer.toString(hv.getMap()[i][j].getCluster()) : Character.toString((char)((hv.getMap()[i][j].getCluster() - 10) + (int)'a'))));
+				}
+				write("\n");
+			}
+
 			ArrayList<ArrayList<Path>> routes = new ArrayList<ArrayList<Path>>(); //Not using arrays because generic arrays are not supported...
 			for (int i = 0; i < nTrucks; i++) {
 				int distance = 0;
@@ -103,6 +116,16 @@ public class Main {
 		// System.out.println("route.size() = " + route.size());
 		// System.out.println("The total time (in seconds) is: " + (totalPackages * 60 + (totalDistance/100) * 3));
 
+	}
+
+	public static void clear(){
+		try{
+			PrintWriter w = new PrintWriter(new File("verify.txt"));
+			w.write("");
+			w.close();
+		}catch(Exception e){
+			System.out.print("Fail to clear");
+		}
 	}
 
 	public static void write(String output){

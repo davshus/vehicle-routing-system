@@ -208,13 +208,6 @@ public class City {
 		return ans;
 	}
 
-
-	int[][] k;
-
-	public int[][] getKMeans(){
-		return k;
-	}
-
 	public int[][] kMeansStartPoints(Pair startPoint, int trucks){
 
 		int[][] res = new int[trucks][2];
@@ -250,7 +243,7 @@ public class City {
 		return res;
 	}
 
-	public void kMeans(Pair startPoint, int trucks) {
+	public int[][] kMeans(Pair startPoint, int trucks) {
 // System.out.println("wtf");
 
 		if(trucks == 1){
@@ -260,7 +253,7 @@ public class City {
 					j.setCluster(0);
 				}	
 			}
-			return;
+			return new int[][]{{map.length / 2, map[0].length / 2}};
 		}
 
 		// System.out.println("break 1");
@@ -314,14 +307,8 @@ public class City {
 					kMeansPoints[i][1] = averages[i][1];
 				}
 			}
-			// System.out.println("\n");
-
-			for(int i = 0; i < trucks; i++){
-			}
-
 			if (works) {
-				k = kMeansPoints;
-				return;
+				return kMeansPoints;
 			}
 		}
 		
