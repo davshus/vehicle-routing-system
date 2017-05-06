@@ -133,7 +133,7 @@ public class City {
 			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
 				// if (p.getDeliver() > 0) System.out.println(p.getCluster());
-				if (!p.delivered() && p.getCluster() == cluster) {
+				if (p.getDeliver() > 0 && !p.delivered() && p.getCluster() == cluster) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
 					return t.pathTo(map[p.getStreet()][calcY(p)]);
@@ -166,11 +166,11 @@ public class City {
 		}
 		int y = calcY(center), x = center.getStreet();
 		// System.out.println(x + " " + y);
-		if (y != (nAvenues * 10) - 1 && !searched[x][y + 1] && !map[x][y + 1].delivered()) {
+		if (y != (nAvenues * 10) - 1 && !searched[x][y + 1] && map[x][y + 1].getDeliver() > 0 && !map[x][y + 1].delivered()) {
 			searched[x][y + 1] = true;
 			return map[x][y + 1];
 		}
-		if (y != 0 && !searched[x][y - 1] && !map[x][y - 1].delivered()) {
+		if (y != 0 && !searched[x][y - 1] && map[x][y - 1].getDeliver() > 0 && !map[x][y - 1].delivered()) {
 			searched[x][y - 1] = true;
 			return map[x][y - 1];
 		}
@@ -278,7 +278,7 @@ public class City {
 
 			for (Pair[] i : map){
 				for (Pair j : i){
-					if(!j.delivered()){
+					if(j.getDeliver() > 0){
 						
 						int index = 0;
 						int greatest = Integer.MAX_VALUE;
@@ -312,7 +312,7 @@ public class City {
 					kMeansPoints[i][1] = averages[i][1];
 				}
 			}
-			System.out.println("\n");
+			// System.out.println("\n");
 
 			for(int i = 0; i < trucks; i++){
 			}
