@@ -6,6 +6,7 @@ public class Pair {
 	private int deliver;
 	private Pair pairFrom;
 	private int cluster;
+	private boolean delivered;
 
 	public Pair() {
 		//Empty Pair
@@ -17,7 +18,8 @@ public class Pair {
 		this.avenue = avenue - 1;
 		this.deliver = 0;
 		this.pairFrom = null;
-		this.cluster = 0;
+		this.cluster = -1;
+		this.delivered = false;
 	}
 
 	public int distanceTo(Pair endPair){
@@ -53,8 +55,12 @@ public class Pair {
 	}
 
 	public void deliver() {
-		setDeliver(0);
+		setDelivered(true);
 	}
+
+	public boolean delivered() { return this.delivered; }
+
+	public void setDelivered(boolean delivered) { this.delivered = delivered; }
 
 	public void setCluster(int cluster){this.cluster = cluster;}
 

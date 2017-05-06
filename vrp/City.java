@@ -43,6 +43,14 @@ public class City {
 		}
 		// System.out.println(bart + " " + lisa);
 	}
+
+	public void resetDeliveries() {
+		for (int i = 0; i < nStreets; i++) {
+			for (int j = 0; j < nAvenues * 10; j++) {
+				map[i][j].setDelivered(false);
+			}
+		}
+	}
 	public Pair[][] getMap() {
 		return this.map;
 	}
@@ -79,12 +87,15 @@ public class City {
  		ArrayList<Path> route = new ArrayList<Path>();
  		Pair currentPair = startPoint;
  		while(currentPair != null){
+ 			// System.out.println("run!");
  			Path nextPath = nearestTo(currentPair, cluster);
  			if (nextPath != null) {
+ 				// System.out.println("yes!");
  				route.add(nextPath);
  				currentPair = nextPath.getEnd();
 			}else{
 				route.add(currentPair.pathTo(startPoint));
+				// System.out.println("ugh");
  				break;
  			}
  		}
@@ -92,9 +103,11 @@ public class City {
  	}
  	//TO TEST
  	public Path nearestTo(Pair t, int cluster) {
+ 		// System.out.println(cluster;)
 		Pair start = null;
 		if (calcY(t) % 2 != 0) {
 			Pair l = checkUpDown(t);
+			// if (l != null) System.out.println(l.getCluster());
 			if (l != null && l.getCluster() == cluster) {
 				totalPackages += map[l.getStreet()][calcY(l)].getDeliver();
 				map[l.getStreet()][calcY(l)].deliver();
@@ -119,12 +132,14 @@ public class City {
 			ArrayList<Pair> newRing = new ArrayList<Pair>();
 			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
-				if (p.getDeliver() > 0 && p.getCluster() == cluster) {
+				// if (p.getDeliver() > 0) System.out.println(p.getCluster());
+				if (!p.delivered() && p.getCluster() == cluster) {
 					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
 					map[p.getStreet()][calcY(p)].deliver();
 					return t.pathTo(map[p.getStreet()][calcY(p)]);
 				}
 				Pair upDown = checkUpDown(p);
+				// if (upDown != null) System.out.println(upDown.getCluster());
 				if (upDown != null && p.getCluster() == cluster) {
 					// System.out.println(p.getStreet() + " " + calcY(p));
 					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
@@ -151,11 +166,11 @@ public class City {
 		}
 		int y = calcY(center), x = center.getStreet();
 		// System.out.println(x + " " + y);
-		if (y != (nAvenues * 10) - 1 && !searched[x][y + 1] && map[x][y + 1].getDeliver() > 0) {
+		if (y != (nAvenues * 10) - 1 && !searched[x][y + 1] && !map[x][y + 1].delivered()) {
 			searched[x][y + 1] = true;
 			return map[x][y + 1];
 		}
-		if (y != 0 && !searched[x][y - 1] && map[x][y - 1].getDeliver() > 0) {
+		if (y != 0 && !searched[x][y - 1] && !map[x][y - 1].delivered()) {
 			searched[x][y - 1] = true;
 			return map[x][y - 1];
 		}
@@ -206,28 +221,30 @@ public class City {
 		double baseDeg = ((double)360)/trucks;
 		
 		int w = map.length, h = map[0].length;
+		// System.out.println(startPoint.getAvenue() + ", " + startPoint.getStreet())
 		//x is stretched by 2 to make the map a square
 		// double radius = Math.sqrt(Math.pow(xSize / 2, 2) + Math.pow(ySize / 2, 2));
 		for (int i = 0; i < trucks; i++) {
 			double currDeg = i * baseDeg;
 			int x = 0, y = 0;
 			if (currDeg <= 180) {
-				y = calcY(startPoint);
-				x = currDeg <= 90 ? w - startPoint.getAvenue() : startPoint.getAvenue(); 
-			} else {
 				y = h - calcY(startPoint);
-				x = currDeg >= 270 ? w - startPoint.getAvenue() : startPoint.getAvenue();
+				x = currDeg <= 90 ? w - startPoint.getStreet() : startPoint.getStreet(); 
+			} else {
+				y = calcY(startPoint);
+				x = currDeg >= 270 ? w - startPoint.getStreet() : startPoint.getStreet();
 			}
 			double currRadius = Math.min(Math.abs(x/Math.cos(Math.toRadians(currDeg))), Math.abs(y/Math.sin(Math.toRadians(currDeg))));
-			System.out.println(currRadius);
+			// System.out.println(currRadius);
 			double currPointDist = Math.abs(currRadius/2);
+			// System.out.println(currPointDist);
 			double currX = currPointDist * Math.cos(Math.toRadians(currDeg)), currY = currPointDist * Math.sin(Math.toRadians(currDeg));
-			currX += startPoint.getAvenue();
+			currX += startPoint.getStreet();
 			currY += calcY(startPoint);
 			// double x = (radius * Math.sin(Math.toRadians(currDeg)))/2, y = (radius * Math.cos(Math.toRadians(currDeg)))/2;
 			// x /= 2;
 			// x += map.length / 2; y += map[0].length / 2;
-			System.out.println(currX + "," + currY + " - " + currDeg);
+			// System.out.println(currX + "," + currY + " - " + currDeg);
 			res[i][0] = (int)currX; res[i][1] = (int)currY;
 		}
 		return res;
@@ -240,7 +257,7 @@ public class City {
 			// System.out.println("break");
 			for (Pair[] i : map){
 				for (Pair j : i){
-					j.setCluster(1);
+					j.setCluster(0);
 				}	
 			}
 			return;
@@ -261,7 +278,7 @@ public class City {
 
 			for (Pair[] i : map){
 				for (Pair j : i){
-					if(j.getDeliver() > 0){
+					if(!j.delivered()){
 						
 						int index = 0;
 						int greatest = Integer.MAX_VALUE;
@@ -272,8 +289,8 @@ public class City {
 								index = ind;
 							}
 						}
-
-						j.setCluster(index + 1);
+						// System.out.println(index);
+						j.setCluster(index);
 
 						averages[index][0] += j.getStreet();
 						averages[index][1] += j.getCalcAvenue();

@@ -27,33 +27,45 @@ public class Main {
 
 		Pair startPoint = hv.getMap()[126][220];
 
-		hv.kMeans(startPoint, 4);
+		// hv.kMeans(startPoint, 4);
 
-		int[][] kMeanPoints = hv.getKMeans();
+		// int[][] kMeanPoints = hv.getKMeans();
 
-		for (int i = 249; i >= 0; i--){
-			for (int j = 499; j >= 0; j--){
+		// for (int i = 249; i >= 0; i--){
+		// 	for (int j = 499; j >= 0; j--){
 
-				for (int[] k : kMeanPoints){
-					if (k[0] == i && k[1] == j){
-						write("*");
-					}
-				}
+		// 		for (int[] k : kMeanPoints){
+		// 			if (k[0] == i && k[1] == j){
+		// 				write("*");
+		// 			}
+		// 		}
 
-				write((hv.getMap()[i][j].getCluster() == 0) ? " " : Integer.toString(hv.getMap()[i][j].getCluster()));
-			}
-			write("\n");
-		}
-
-
-		// int numOfTrucks = 1;
-
-
-		// while(true){
-			
-			
-		// 	numOfTrucks ++;
+		// 		write((hv.getMap()[i][j].getCluster() == 0) ? " " : (hv.getMap()[i][j].getCluster() < 10 ? Integer.toString(hv.getMap()[i][j].getCluster()) : Character.toString((char)((hv.getMap()[i][j].getCluster() - 10) + (int)'a'))));
+		// 	}
+		// 	write("\n");
 		// }
+
+
+		int nTrucks = 0;
+		double time;
+		int totalDistance;
+		do {
+			hv.resetDeliveries();
+			nTrucks++;
+			totalDistance = 0;
+			System.out.println(nTrucks);
+			hv.kMeans(startPoint, nTrucks);
+			ArrayList<ArrayList<Path>> routes = new ArrayList<ArrayList<Path>>(); //Not using arrays because generic arrays are not supported...
+			for (int i = 0; i < nTrucks; i++) {
+				routes.add(hv.greedyRoute(startPoint, i));
+				for (Path p : routes.get(i)) {
+					totalDistance += p.getDistance();
+				}
+			}
+			time = (hv.totalPackages * 60) + ((totalDistance/100) * 3);
+			System.out.println(time + "s = " + time/3600 + "h");
+		} while (time/3600 > 24); // seconds / 3600 = hours
+		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + time + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
 
 
 		// ArrayList<Path> route = new ArrayList<Path>();
