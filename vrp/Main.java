@@ -86,7 +86,7 @@ public class Main {
 				}
 				System.out.println(time + "s = " + time/3600 + "h");
 			}
-		} while (gTime/3600 > 24 && nTrucks < 2); // seconds / 3600 = hours
+		} while (gTime/3600 > 24 && nTrucks < 25); // seconds / 3600 = hours
 		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
 
 
@@ -121,10 +121,10 @@ public class Main {
 	}
 
 	public static void clear(){
+
+		writer.close();
 		try{
-			PrintWriter w = new PrintWriter(new File("verify.txt"));
-			w.write("");
-			w.close();
+			writer = new PrintWriter("verify.txt", "UTF-8");
 		}catch(Exception e){
 			System.out.print("Fail to clear");
 		}

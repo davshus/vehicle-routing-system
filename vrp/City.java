@@ -279,6 +279,8 @@ public class City {
 				for (Pair j : i){
 					if(j.getDeliver() > 0){
 						
+						// System.out.println("Street: " + j.getStreet() + "\t Avenue: " + j.getCalcAvenue());
+
 						int index = 0;
 						int greatest = Integer.MAX_VALUE;
 
@@ -294,6 +296,8 @@ public class City {
 						averages[index][0] += j.getStreet();
 						averages[index][1] += j.getCalcAvenue();
 						aveNums[index] += 1;
+					}else{
+						j.setCluster(-1);
 					}
 				}	
 			}
