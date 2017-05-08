@@ -256,6 +256,12 @@ public class City {
 			return new int[][]{{map.length / 2, map[0].length / 2}};
 		}
 
+		for (Pair[] i : map){
+			for (Pair j : i){
+				j.setCluster(-1);
+			}	
+		}
+
 		// System.out.println("break 1");
 
 		int[][] kMeansPoints = kMeansStartPoints(startPoint, trucks);
@@ -288,7 +294,6 @@ public class City {
 						averages[index][0] += j.getStreet();
 						averages[index][1] += j.getCalcAvenue();
 						aveNums[index] += 1;
-						
 					}
 				}	
 			}

@@ -58,10 +58,12 @@ public class Main {
 			clear();
 			for(int i = 249; i >= 0; i--){
 				for (int j = 449; j >= 0; j--){
+					int f = 0;
 					for (int[] k : kMeanPoints){
 						if (k[0] == i && k[1] == j){
-							write("*");
+							write((f < 10 ? f : Character.toString((char)((f - 10) + (int)'a'))) + "*");
 						}
+						f ++;
 					}
 					write((hv.getMap()[i][j].getCluster() == -1) ? " " : (hv.getMap()[i][j].getCluster() < 10 ? Integer.toString(hv.getMap()[i][j].getCluster()) : Character.toString((char)((hv.getMap()[i][j].getCluster() - 10) + (int)'a'))));
 				}
@@ -84,7 +86,7 @@ public class Main {
 				}
 				System.out.println(time + "s = " + time/3600 + "h");
 			}
-		} while (gTime/3600 > 24); // seconds / 3600 = hours
+		} while (gTime/3600 > 24 && nTrucks < 2); // seconds / 3600 = hours
 		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
 
 
