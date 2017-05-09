@@ -50,10 +50,11 @@ public class Main {
 		double gTime = -1;
 		int totalDistance;
 		do {
+			gTime = -1;
 			hv.resetDeliveries();
 			nTrucks++;
 			totalDistance = 0;
-			System.out.println(nTrucks);
+			// System.out.println(nTrucks);
 			int[][] kMeanPoints = hv.kMeans(startPoint, nTrucks);
 			clear();
 			for(int i = 249; i >= 0; i--){
@@ -84,11 +85,12 @@ public class Main {
 				if (gTime == -1 || time > gTime) {
 					gTime = time;
 				}
-				System.out.println(time + "s = " + time/3600 + "h");
+				// System.out.println(time + "s = " + time/3600 + "h");
 			}
+			// System.out.println(gTime/3600);
 		} while (gTime/3600 > 24 && nTrucks < 25); // seconds / 3600 = hours
-		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime + " seconds, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
-
+		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime/3600 + " hours, delivering " + hv.totalPackages + " packages and traveling " + totalDistance + " feet.");
+		System.out.println("The total cost is:\tto be determined");
 
 		// ArrayList<Path> route = new ArrayList<Path>();
 
