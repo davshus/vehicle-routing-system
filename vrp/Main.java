@@ -54,7 +54,7 @@ public class Main {
 		do {
 			gTime = -1;
 			hv.resetDeliveries();
-			nTrucks = 2;
+			nTrucks++;
 			totalDistance = 0;
 			gPackages = 0;
 			// System.out.println(nTrucks);
@@ -95,27 +95,29 @@ public class Main {
 			// 	System.out.print("\n\n");
 			// }
 
+			clear();
+
 			for (Pair[] a : hv.getMap()){
 				for(Pair f : a){
 					if (f.getDeliver() > 0){
-						System.out.println(f.toString() + "\t" + f.getCluster() + "\t" + (f.delivered() ? "DELIVERED" : "NOT DELIVERED") + "\t" + (City.calcY(f) % 2 == 0 ? "EVEN" : "ODD"));
+						write(f.toString() + "\t" + f.getCluster() + "\t" + (f.delivered() ? "DELIVERED" : "NOT DELIVERED") + "\t" + (City.calcY(f) % 2 == 0 ? "EVEN\n" : "ODD\n"));
 					}
 				}
 			}
 
-			for(int z = 249; z >= 0; z--){
-					for (int j = 449; j >= 0; j--){
-						int f = 0;
-						for (int[] k : kMeanPoints){
-							if (k[0] == z && k[1] == j){
-								write((f < 10 ? f : Character.toString((char)((f - 10) + (int)'a'))) + "*");
-							}
-							f ++;
-						}
-						write((hv.getMap()[z][j].getCluster() == -1) ? " " : (hv.getMap()[z][j].getCluster() < 10 ? Integer.toString(hv.getMap()[z][j].getCluster()) : Character.toString((char)((hv.getMap()[z][j].getCluster() - 10) + (int)'a'))));
-					}
-					write("\n");
-				}
+			// for(int z = 249; z >= 0; z--){
+			// 		for (int j = 449; j >= 0; j--){
+			// 			int f = 0;
+			// 			for (int[] k : kMeanPoints){
+			// 				if (k[0] == z && k[1] == j){
+			// 					write((f < 10 ? f : Character.toString((char)((f - 10) + (int)'a'))) + "*");
+			// 				}
+			// 				f ++;
+			// 			}
+			// 			write((hv.getMap()[z][j].getCluster() == -1) ? " " : (hv.getMap()[z][j].getCluster() < 10 ? Integer.toString(hv.getMap()[z][j].getCluster()) : Character.toString((char)((hv.getMap()[z][j].getCluster() - 10) + (int)'a'))));
+			// 		}
+			// 		write("\n");
+			// 	}
 
 			// System.out.println(gTime/3600);
 		} while (gTime/3600 > 24); // seconds / 3600 = hours
