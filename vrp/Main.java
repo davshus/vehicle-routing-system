@@ -52,12 +52,11 @@ public class Main {
 		int totalDistance = 0;
 		int gPackages = 0;
 		do {
-			gTime = -1;
+			// gTime = -1;
 			hv.resetDeliveries();
 			nTrucks++;
 			totalDistance = 0;
 			gPackages = 0;
-			// System.out.println(nTrucks);
 			int[][] kMeanPoints = hv.kMeans(startPoint, nTrucks);
 
 			boolean start = true;
@@ -67,20 +66,15 @@ public class Main {
 				int distance = 0;
 				int packages = 0;
 				routes.add(hv.greedyRoute(startPoint, i));
-				// clear();
 
 				for (Path p : routes.get(i)) {
-					if (start){
-						start = false;
-						// write(p.getStart().toString() + "\n");
-					}
-					// write(p.getEnd().toString() + "\n");
 					totalDistance += p.getDistance();
 					distance += p.getDistance();
 					packages += p.getEnd().getDeliver();
 				}
 				double time = (packages * 60) + ((distance/100) * 3);
-				if (gTime == -1 || time > gTime) {
+				if (gTime == -1 || time < gTime) {
+					// System.out.println("asdf");
 					gTime = time;
 					gPackages += packages;
 					totalDistance = distance;
@@ -101,6 +95,7 @@ public class Main {
 				for(Pair f : a){
 					if (f.getDeliver() > 0){
 						write(f.toString() + "\t" + f.getCluster() + "\t" + (f.delivered() ? "DELIVERED" : "NOT DELIVERED") + "\t" + (City.calcY(f) % 2 == 0 ? "EVEN\n" : "ODD\n"));
+
 					}
 				}
 			}
