@@ -11,48 +11,33 @@ public class Main {
 
 
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		for (int i = 1; i < 12; i++){
+			returnStatement r = vrp("cycle" + i + ".txt");
+			System.out.println("Cycle: " + i + "\tTrucks: " + r.getTrucks() + "\tTime: " + r.getTime() + "\tDistance: " + r.getDistance() + "\tPackages: " + r.getPackages());
+		}
+
+	}
+
+
+	public static returnStatement vrp(String fileName){
 		City hv = null;
 		try {
 			writer = new PrintWriter("verify.txt", "UTF-8");
 			hv = new City();
-			hv.setupMap(new File(sc.nextLine()));
-			// hv.setupMap(new File("cycle1PRACTICE.txt"));
-			// write("Start With Point: 126 22 A")
+			hv.setupMap(new File(fileName));
 		} catch (Exception e) {
-			System.out.println("There was an error while setting up Homerville: " + e.getMessage());
+			// System.out.println("There was an error while setting up Homerville: " + e.getMessage());
 			e.printStackTrace();
-			return;
+			return new returnStatement("There was an error while setting up Homerville: " + e.getMessage());
 		}
 		Pair[][] map = hv.getMap();
-
 		Pair startPoint = hv.getMap()[126][220];
-
-		// hv.kMeans(startPoint, 4);
-
-		// int[][] kMeanPoints = hv.getKMeans();
-
-		// for (int i = 249; i >= 0; i--){
-		// 	for (int j = 499; j >= 0; j--){
-
-		// 		for (int[] k : kMeanPoints){
-		// 			if (k[0] == i && k[1] == j){
-		// 				write("*");
-		// 			}
-		// 		}
-
-		// 		write((hv.getMap()[i][j].getCluster() == 0) ? " " : (hv.getMap()[i][j].getCluster() < 10 ? Integer.toString(hv.getMap()[i][j].getCluster()) : Character.toString((char)((hv.getMap()[i][j].getCluster() - 10) + (int)'a'))));
-		// 	}
-		// 	write("\n");
-		// }
-
 
 		int nTrucks = 0;
 		double gTime = -1;
 		int totalDistance = 0;
 		int gPackages = 0;
 		do {
-			// gTime = -1;
 			hv.resetDeliveries();
 			nTrucks++;
 			totalDistance = 0;
@@ -74,31 +59,30 @@ public class Main {
 				}
 				double time = (packages * 60) + ((distance/100) * 3);
 				if (gTime == -1 || time < gTime) {
-					// System.out.println("asdf");
 					gTime = time;
 					gPackages += packages;
 					totalDistance = distance;
 				}
-				// System.out.println(time + "s = " + time/3600 + "h");
 			}
 
+
+
+			// clear();
 			// for (ArrayList<Path> a : routes){
 			// 	for (Path f : a){
-			// 		System.out.println(f.getEnd().toString());
+			// 		write(f.getEnd().toString() + "\n");
 			// 	}
-			// 	System.out.print("\n\n");
+			// 	write("\n\n");
 			// }
 
-			clear();
+			// for (Pair[] a : hv.getMap()){
+			// 	for(Pair f : a){
+			// 		if (f.getDeliver() > 0){
+			// 			write(f.toString() + "\t" + f.getCluster() + "\t" + (f.delivered() ? "DELIVERED" : "NOT DELIVERED") + "\t" + (City.calcY(f) % 2 == 0 ? "EVEN" : "ODD") + "\t" + f.getDeliver() + "\n");
 
-			for (Pair[] a : hv.getMap()){
-				for(Pair f : a){
-					if (f.getDeliver() > 0){
-						write(f.toString() + "\t" + f.getCluster() + "\t" + (f.delivered() ? "DELIVERED" : "NOT DELIVERED") + "\t" + (City.calcY(f) % 2 == 0 ? "EVEN\n" : "ODD\n"));
-
-					}
-				}
-			}
+			// 		}
+			// 	}
+			// }
 
 			// for(int z = 249; z >= 0; z--){
 			// 		for (int j = 449; j >= 0; j--){
@@ -117,10 +101,26 @@ public class Main {
 			// System.out.println(gTime/3600);
 		} while (gTime/3600 > 24); // seconds / 3600 = hours
 		writer.close();
-		System.out.println("With " + nTrucks + " trucks, Homerville was delivered to in " + gTime/3600 + " hours, delivering " + gPackages + " packages and traveling " + totalDistance + " feet.");
-		System.out.println("The total cost is:\tto be determined");
 
+		
+		// System.out.println("The total cost is:\tto be determined");
+
+
+		returnStatement r = new returnStatement(nTrucks, hv.totalPackages, round(gTime/3600, 4), totalDistance);
+		return r;
 	}
+
+	public static double round(double value, int places) {
+    	if (places < 0) throw new IllegalArgumentException();
+
+    	long factor = (long) Math.pow(10, places);
+    	value = value * factor;
+    	long tmp = Math.round(value);
+    	return (double) tmp / factor;
+	}
+
+
+
 
 	public static void clear(){
 
@@ -134,9 +134,27 @@ public class Main {
 
 	public static void write(String output){
 		writer.print(output);
-		// System.out.print(output);
 	}
 
-
-
 }
+
+class returnStatement{
+
+	private int trucks, packages;
+	private double time, distance;
+
+	public returnStatement(int trucks, int packages, double time, double distance){
+		this.trucks = trucks;
+		this.packages = packages;
+		this.time = time;
+		this.distance = distance;
+	}
+
+	public returnStatement(String error){ System.out.println(error); }
+
+	public int getTrucks(){ return this.trucks; }
+	public int getPackages(){ return this.packages; }
+	public double getTime(){ return this.time; }
+	public double getDistance(){ return this.distance; }
+}
+

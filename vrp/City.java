@@ -22,15 +22,19 @@ public class City {
 	}
 
 	public void setupMap(File inputFile) throws Exception {
-		System.out.println("Setting up Homerville...");
+		// System.out.println("Setting up Homerville...");
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
-		System.out.println("Cycle: " + sc.next() + " House Number: " + sc.next());
+		String lol = sc.next();
+		String placeHolder = sc.next();
+		// System.out.println("Cycle: " + sc.next() + " House Number: " + sc.next());
 		while (sc.hasNext()) { //NOTE: Possible change to fixed house number counter?
 			String streetStr = sc.next();
 			if (streetStr.equals("Bart Complex")) {
 				bart = sc.nextInt();
+				map[2][36].setDeliver(bart);
 				sc.next(); //Lisa
 				lisa = sc.nextInt();
+				map[149][336].setDeliver(lisa);
 				break;
 			}
 			// System.out.println(streetStr);
@@ -51,6 +55,8 @@ public class City {
 				map[i][j].setCluster(-1);
 			}
 		}
+		map[2][36].setDeliver(bart);
+		map[149][336].setDeliver(lisa);
 	}
 	public Pair[][] getMap() {
 		return this.map;
@@ -127,6 +133,7 @@ public class City {
 		searched[start.getStreet()][calcY(start)] = true;
 		ArrayList<Pair> ring = new ArrayList<Pair>();
 		ring.add(start);
+		// boolean isStart = true;
 		// boolean debug = false;//totalPackages > 776;
 		while (true) {
 			if (ring.isEmpty()) return null;
@@ -134,11 +141,19 @@ public class City {
 			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
 			for (Pair p : ring) {
 				// if (p.getDeliver() > 0) System.out.println(p.getCluster());
-				if (p.getDeliver() > 0 && !p.delivered() && p.getCluster() == cluster) {
-					totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
-					map[p.getStreet()][calcY(p)].deliver();
-					return t.pathTo(map[p.getStreet()][calcY(p)]);
+				if (p != t && p.getDeliver() > 0 && !p.delivered() && p.getCluster() == cluster) {
+
+					if (p.getDeliver() > 100){
+						totalPackages += 100;
+						p.setDeliver(p.getDeliver() - 100);
+						return t.pathTo(map[p.getStreet()][calcY(p)]);
+					}else{
+						totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
+						map[p.getStreet()][calcY(p)].deliver();
+						return t.pathTo(map[p.getStreet()][calcY(p)]);
+					}
 				}
+				// isStart = false;
 				Pair upDown = checkUpDown(p, cluster);
 				// if (upDown != null) System.out.println(upDown.getCluster());
 				if (upDown != null) {
@@ -245,18 +260,18 @@ public class City {
 	}
 
 	public void test(){
-		System.out.println("HelpMe");
-		for(Pair[] i : map){
-			for (Pair j : i){
-				if (j.getCluster() == -1 && j.getDeliver() > 0){
-					System.out.println("Pair without a cluster");
-				}
-			}
-		}
+		// for(Pair[] i : map){
+			// for (Pair j : i){
+				// if (j.getCluster() == -1 && j.getDeliver() > 0){
+					// System.out.println("Pair without a cluster");
+				// }
+			// }
+		// }
 	}
 
 	public int[][] kMeans(Pair startPoint, int trucks) {
 // System.out.println("wtf");
+		totalPackages = 0;
 
 		if(trucks == 1){
 			// System.out.println("break");
@@ -305,9 +320,11 @@ public class City {
 						// System.out.println(index);
 						j.setCluster(index);
 
-						averages[index][0] += j.getStreet();
-						averages[index][1] += j.getCalcAvenue();
-						aveNums[index] += 1;
+						for (int lol = 0; lol < j.getDeliver(); lol++){
+							averages[index][0] += j.getStreet();
+							averages[index][1] += j.getCalcAvenue();
+							aveNums[index] += 1;
+						}
 					}else{
 						j.setCluster(-1);
 					}
