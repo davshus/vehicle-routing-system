@@ -106,72 +106,28 @@ public class City {
  				break;
  			}
  		}
+		System.out.println("Done");
  		return route;
  	}
  	//TO TEST
- 	public Path nearestTo(Pair t, int cluster) {
- 		// System.out.println(cluster;)
-		Pair start = null;
-		if (calcY(t) % 2 != 0) {
-			Pair l = checkUpDown(t, cluster);
-			// if (l != null) System.out.println(l.getCluster());
-			if (l != null) {
-				totalPackages += map[l.getStreet()][calcY(l)].getDeliver();
-				map[l.getStreet()][calcY(l)].deliver();
-				return t.pathTo(map[l.getStreet()][calcY(l)]);
-			}
-			start = map[t.getStreet()][calcY(t) + (calcY(t) != (nAvenues * 10) - 1 ? 1 : -1)];
-		} else {
-			start = t;
-		}
-		//Implementation of modified flood fill
-		searched = new boolean[nStreets][nAvenues * 10];
-		// Arrays.fill(searched, Arrays.fill(new boolean[250], false));
-		for (int i = 0; i < searched.length; i++)
-			for (int j = 0; j < searched[0].length; j++)
-				searched[i][j] = false;
-		searched[start.getStreet()][calcY(start)] = true;
-		ArrayList<Pair> ring = new ArrayList<Pair>();
-		ring.add(start);
-		// boolean isStart = true;
-		// boolean debug = false;//totalPackages > 776;
-		while (true) {
-			if (ring.isEmpty()) return null;
-			ArrayList<Pair> newRing = new ArrayList<Pair>();
-			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
-			for (Pair p : ring) {
-				// if (p.getDeliver() > 0) System.out.println(p.getCluster());
-				if (p != t && p.getDeliver() > 0 && !p.delivered() && p.getCluster() == cluster) {
-
-					if (p.getDeliver() > 100){
-						totalPackages += 100;
-						p.setDeliver(p.getDeliver() - 100);
-						return t.pathTo(map[p.getStreet()][calcY(p)]);
-					}else{
-						totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
-						map[p.getStreet()][calcY(p)].deliver();
-						return t.pathTo(map[p.getStreet()][calcY(p)]);
+ 	public Path nearestTo(Pair start, int cluster) {
+		// System.out.println("test");
+		int closestDistance = -1;
+		int bestI = -1, bestJ = -1;
+ 		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map.length; j++) {
+				if (map[i][j].getCluster() == cluster && !map[i][j].delivered()) {
+					if (closestDistance < 0 || bestI < 0 || bestJ < 0 || start.distanceTo(map[i][j]) < closestDistance) {
+						closestDistance = start.distanceTo(map[i][j]);
+						bestI = i; bestJ = j;
 					}
 				}
-				// isStart = false;
-				Pair upDown = checkUpDown(p, cluster);
-				// if (upDown != null) System.out.println(upDown.getCluster());
-				if (upDown != null) {
-					// System.out.println(p.getStreet() + " " + calcY(p));
-					// System.out.println(upDown.getStreet() + " " + calcY(upDown));
-					totalPackages += map[upDown.getStreet()][calcY(upDown)].getDeliver();
-					map[upDown.getStreet()][calcY(upDown)].deliver();
-					return t.pathTo(map[upDown.getStreet()][calcY(upDown)]);
-				}
-				newRing.addAll(calcAround(p));
-				// if (debug) System.out.println(calcY(p));
 			}
-			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
-			ring = newRing;
-			// if (debug) System.out.println(Arrays.toString(ring.toArray()));
-			// if (debug) new Scanner(System.in).next();
 		}
-
+		if (closestDistance < 0 || bestI < 0 || bestJ < 0) return null;
+		totalPackages += map[bestI][bestJ].getDeliver();
+		map[bestI][bestJ].deliver();
+		return start.pathTo(map[bestI][bestJ]);
 	}
 	public Pair checkUpDown(Pair center, int cluster) {
 		//CENTER Y MUST BE EVEN
@@ -228,7 +184,7 @@ public class City {
 
 		int[][] res = new int[trucks][2];
 		double baseDeg = ((double)360)/trucks;
-		
+
 		int w = map.length, h = map[0].length;
 		// System.out.println(startPoint.getAvenue() + ", " + startPoint.getStreet())
 		//x is stretched by 2 to make the map a square
@@ -238,7 +194,7 @@ public class City {
 			int x = 0, y = 0;
 			if (currDeg <= 180) {
 				y = h - calcY(startPoint);
-				x = currDeg <= 90 ? w - startPoint.getStreet() : startPoint.getStreet(); 
+				x = currDeg <= 90 ? w - startPoint.getStreet() : startPoint.getStreet();
 			} else {
 				y = calcY(startPoint);
 				x = currDeg >= 270 ? w - startPoint.getStreet() : startPoint.getStreet();
@@ -278,7 +234,7 @@ public class City {
 			for (Pair[] i : map){
 				for (Pair j : i){
 					j.setCluster(0);
-				}	
+				}
 			}
 			return new int[][]{{map.length / 2, map[0].length / 2}};
 		}
@@ -286,7 +242,7 @@ public class City {
 		for (Pair[] i : map){
 			for (Pair j : i){
 				j.setCluster(-1);
-			}	
+			}
 		}
 
 		// System.out.println("break 1");
@@ -305,7 +261,7 @@ public class City {
 			for (Pair[] i : map){
 				for (Pair j : i){
 					if(j.getDeliver() > 0){
-						
+
 						// System.out.println("Street: " + j.getStreet() + "\t Avenue: " + j.getCalcAvenue());
 
 						int index = 0;
@@ -328,7 +284,7 @@ public class City {
 					}else{
 						j.setCluster(-1);
 					}
-				}	
+				}
 			}
 			// System.out.println("break 4");
 			boolean works = true;
@@ -338,7 +294,7 @@ public class City {
 					continue;
 				}
 				averages[i][0] /= aveNums[i];
-				averages[i][1] /= aveNums[i]; 
+				averages[i][1] /= aveNums[i];
 				if (averages[i][0] != kMeansPoints[i][0] || averages[i][1] != kMeansPoints[i][1]){
 					works = false;
 					kMeansPoints[i][0] = averages[i][0];
@@ -350,7 +306,7 @@ public class City {
 				return kMeansPoints;
 			}
 		}
-		
+
 	}
 	public static int calcY(int ave, char name) {
 		// System.out.println(ave);
