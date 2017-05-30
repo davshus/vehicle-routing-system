@@ -26,6 +26,9 @@ public class City {
 	}
 
 	public void setupMap(File inputFile) throws Exception {
+
+		deliveriesPairs = new ArrayList<Pair>();
+
 		// System.out.println("Setting up Homerville...");
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
 		String lol = sc.next();
@@ -52,8 +55,14 @@ public class City {
 		// System.out.println(bart + " " + lisa);
 
 		for (Pair[] m : map){
-			// for (Pair l )
+			for (Pair l : m){
+				if (l.getDeliver() > 0){
+					deliveriesPairs.add(l);
+				}
+			}
 		}
+
+		System.out.println(deliveriesPairs.size());
 
 
 
@@ -119,6 +128,29 @@ public class City {
  		}
  		return route;
  	}
+
+
+ 	public Path nearestToFast(Pair t, int cluster){
+ 		Pair closestPair = t;
+ 		int closestDist = Integer.MAX_VALUE;
+
+ 		for (Pair thisPair : deliveriesPairs){
+ 			if(thisPair.getCluster() == cluster){
+ 				if (t.distanceTo(thisPair) < closestDist){
+ 					closestPair = thisPair;
+ 					closestDist = t.distanceTo(thisPair);
+ 				}
+ 			}
+ 		}
+ 		// System.out.println("This is a try");
+ 		return new Path(t, closestPair, closestDist);
+
+ 	}
+
+
+
+
+
  	//TO TEST
  	public Path nearestTo(Pair t, int cluster) {
  		// System.out.println(cluster;)

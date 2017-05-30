@@ -23,7 +23,7 @@ public class Main {
 
 
 ///OUT OF 12
-		for (int i = 1; i < 12; i++){
+		for (int i = 1; i < 11; i++){
 			returnStatement r = vrp("cycle" + i + ".txt");
 			trucks[i-1] = r.getTrucks();
 			time[i-1] = r.getTime();
@@ -51,7 +51,7 @@ public class Main {
 		}
 
 //OUT OF 11
-		for (int i = 0; i < 11; i++){
+		for (int i = 0; i < 10; i++){
 
 			int cost = 0;
 
@@ -155,7 +155,7 @@ public class Main {
 					
 					packages += p.getEnd().getDeliver();
 				}
-				double time = (packages * 30) + ((distance/100) * 3);
+				double time = (packages * 60 / 2) + ((distance/100) * 3);
 				if (gTime == -1 || time > gTime) {
 					gTime = time;
 					gPackages += packages;
