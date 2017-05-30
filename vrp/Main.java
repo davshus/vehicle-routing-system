@@ -23,7 +23,7 @@ public class Main {
 
 
 ///OUT OF 12
-		for (int i = 1; i < 12; i++){
+		for (int i = 1; i < 11; i++){
 			returnStatement r = vrp("cycle" + i + ".txt");
 			trucks[i-1] = r.getTrucks();
 			time[i-1] = r.getTime();
@@ -51,7 +51,7 @@ public class Main {
 		}
 
 //OUT OF 11
-		for (int i = 0; i < 11; i++){
+		for (int i = 0; i < 10; i++){
 
 			int cost = 0;
 
@@ -147,7 +147,7 @@ public class Main {
 			for (int i = 0; i < nTrucks; i++) {
 				distance = 0;
 				int packages = 0;
-				routes.add(hv.greedyRoute(startPoint, i));
+				routes.add(twoOpt(hv.greedyRoute(startPoint, i)));
 
 				for (Path p : routes.get(i)) {
 					totalDistance += p.getDistance();
@@ -198,8 +198,46 @@ public class Main {
 		writer.print(output);
 	}
 
+	public static ArrayList<Path> twoOpt (ArrayList<Path> route) {
+		int failed = 0;
+		int tolerance = 9999;
+		ArrayList<Path> curr = route;
+		while (failed < tolerance) {
+			int a = (int)(Math.random() * route.size());
+			int b;
+			do {
+				b = (int)(Math.random() * route.size());
+			} while (b == a);
+			Path aOrigPath = curr.get(a);
+			Path bOrigPath = curr.get(b);
+			Path aPath = aOrigPath.getStart().pathTo(bOrigPath.getEnd());
+			Path bPath = bOrigPath.getStart().pathTo(aOrigPath.getEnd());
+			int lesser = Math.min(a, b);
+			int greater = Math.max(a, b);
+			if (aOrigPath.getDistance() + bOrigPath.getDistance() < aPath.getDistance() + bPath.getDistance()) {
+				failed++;
+				continue;
+			}
+			ArrayList<Path> head = new ArrayList<Path>(curr.subList(0, lesser));
+			ArrayList<Path> mid = new ArrayList<Path>(curr.subList(lesser + 1, greater));
+			for (int i = 0; i < mid.size(); i++) {
+				Path tmp = mid.get(i);
+				tmp.reverse();
+				mid.set(i, tmp);
+			}
+			ArrayList<Path> tail = new ArrayList<Path>(curr.subList(greater + 1, route.size()));
+			ArrayList<Path> newRoute = head;
+			newRoute.add(lesser == a ? aPath : bPath);
+			Collections.reverse(mid);
+			newRoute.addAll(mid);
+			newRoute.add(greater == b ? bPath : aPath);
+			newRoute.addAll(tail);
+			curr = newRoute;
+			failed = 0;
+		}
+		return curr;
+	}
 }
-
 class returnStatement{
 
 	private int trucks, packages, distance, cluster;
