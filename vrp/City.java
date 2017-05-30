@@ -10,7 +10,11 @@ public class City {
 	public int getDeliver(){ return totalPackages; }
 	public static int nStreets = 250, nAvenues = 50;
 	private Pair[][] map;
+	private ArrayList<Pair> deliveriesPairs;
 	private int lisa, bart;
+
+	public ArrayList<Pair> getdeliverArr(){ return this.deliveriesPairs; }
+
 	public City() {
 		map = new Pair[nStreets][nAvenues * 10];
 		for (int i = 0; i < nStreets; i++) {
@@ -46,6 +50,13 @@ public class City {
 			map[street - 1][calcY(avenue - 1, letter)].addDeliver();
 		}
 		// System.out.println(bart + " " + lisa);
+
+		for (Pair[] m : map){
+			// for (Pair l )
+		}
+
+
+
 	}
 
 	public void resetDeliveries() {
