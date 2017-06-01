@@ -155,7 +155,7 @@ public class Main {
 					
 					packages += p.getEnd().getDeliver();
 				}
-				double time = (packages * 30) + ((distance/100) * 3);
+				double time = (packages * 60 / 2) + ((distance/100) * 3);
 				if (gTime == -1 || time > gTime) {
 					gTime = time;
 					gPackages += packages;

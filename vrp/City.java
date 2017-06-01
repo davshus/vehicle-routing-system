@@ -26,6 +26,9 @@ public class City {
 	}
 
 	public void setupMap(File inputFile) throws Exception {
+
+		deliveriesPairs = new ArrayList<Pair>();
+
 		// System.out.println("Setting up Homerville...");
 		Scanner sc = new Scanner(inputFile).useDelimiter(",|\r?\n\r?|\n?\r\n?");
 		String lol = sc.next();
@@ -52,8 +55,14 @@ public class City {
 		// System.out.println(bart + " " + lisa);
 
 		for (Pair[] m : map){
-			// for (Pair l )
+			for (Pair l : m){
+				if (l.getDeliver() > 0){
+					deliveriesPairs.add(l);
+				}
+			}
 		}
+
+		System.out.println(deliveriesPairs.size());
 
 
 
@@ -106,7 +115,7 @@ public class City {
  		Pair currentPair = startPoint;
  		while(currentPair != null){
  			// System.out.println("run!");
- 			Path nextPath = nearestTo(currentPair, cluster);
+ 			Path nextPath = nearestToFast(currentPair, cluster);
  			if (nextPath != null) {
  				// System.out.println("yes!");
  				route.add(nextPath);
@@ -119,6 +128,67 @@ public class City {
  		}
  		return route;
  	}
+
+
+ 	public Path nearestToFast(Pair t, int cluster){
+ 		Pair closestPair = null;
+ 		Pair bartLisa = null;
+ 		int closestDist = Integer.MAX_VALUE;
+
+ 		for (Pair thisPair : deliveriesPairs){
+ 			if(thisPair.getCluster() == cluster && t.distanceTo(thisPair) < closestDist && !thisPair.delivered() && thisPair != t && thisPair != bartLisa){
+ 				closestPair = thisPair;
+ 				closestDist = t.distanceTo(thisPair);
+ 				
+
+
+ 				/*
+				if (p != t && p.getDeliver() > 0 && !p.delivered() && p.getCluster() == cluster) {
+
+					if (p.getDeliver() > 100){
+						totalPackages += 100;
+						p.setDeliver(p.getDeliver() - 100);
+						return t.pathTo(map[p.getStreet()][calcY(p)]);
+					}else{
+						totalPackages += map[p.getStreet()][calcY(p)].getDeliver();
+						map[p.getStreet()][calcY(p)].deliver();
+						return t.pathTo(map[p.getStreet()][calcY(p)]);
+					}
+				}
+ 				*/
+
+
+
+ 			}
+ 		}
+
+ 		if(closestPair == null){
+ 			return null;
+ 		}
+
+
+ 		if(closestPair.getDeliver() > 100){
+ 			totalPackages += 100;
+ 			closestPair.setDeliver(closestPair.getDeliver() - 100);
+ 			bartLisa = closestPair;
+ 			return t.pathTo(closestPair);
+ 		}else{
+ 			bartLisa = null;
+ 			totalPackages += closestPair.getDeliver();
+ 			closestPair.deliver();
+		}
+
+
+
+ 		// System.out.println("This is a try");
+ 		return new Path(t, closestPair, closestDist);
+
+ 	}
+
+
+
+
+
  	//TO TEST
  	public Path nearestTo(Pair t, int cluster) {
  		// System.out.println(cluster;)
